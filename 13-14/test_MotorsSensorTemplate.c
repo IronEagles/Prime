@@ -1,6 +1,5 @@
 #pragma config(Hubs,  S1, HTMotor,  none,     none,     none)
-#pragma config(Sensor, S2,     sensorRight,    sensorHiTechnicIRSeeker1200)
-#pragma config(Sensor, S3,     sensorLeft,     sensorHiTechnicIRSeeker1200)
+#pragma config(Sensor, S2,     IRsensor,       sensorHiTechnicIRSeeker1200)
 #pragma config(Motor,  motorA,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorB,           ,             tmotorNXT, openLoop)
 #pragma config(Motor,  motorC,           ,             tmotorNXT, openLoop)
@@ -12,11 +11,6 @@ task main()
 {
 	while(true)  // infinite loop:
 {
-  nxtDisplayCenteredTextLine(3, "Sensor Value: %d", SensorValue[sensorRight]);  // display "Sensor Value: ##"
-  nxtDisplayCenteredTextLine(4, "Sensor Value: %d", SensorValue[sensorLeft]);
+  nxtDisplayCenteredTextLine(3, "Sensor Value: %d", SensorValue[IRsensor]);  // display "Sensor Value: ##"
   wait1Msec(100);  // Wait 100 milliseconds to help display correctly
-}
-
-
-
 }
