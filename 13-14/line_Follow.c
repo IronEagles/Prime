@@ -8,13 +8,13 @@
 task main()
 {
 
-int speed = 50;
+int speed =40;
 
 	while(true)
 	{
-		nxtDisplayCenteredTextLine(3, "Sensor Value: %d", SensorValue[colorSensor]);
+		nxtDisplayCenteredTextLine(3, "Sensor Value: %d", SensorValue[sensorLightActive]);
 
-		if (SensorValue[colorSensor] < 30)
+		if (SensorValue[sensorLightActive] > 30)
 		{
 			motor[motorLeft] = .2 * speed;
 			motor[motorRight] = 1 * speed;
