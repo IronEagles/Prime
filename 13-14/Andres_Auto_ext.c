@@ -21,38 +21,53 @@ bool done = false;
 		if(distance < 30)
 		{
 			nxtDisplayCenteredTextLine(3, "TURN RIGHT");
-			motor[motorLeft] = 20;
-			motor[motorRight] = 15;
+			playtone(300, 10);
+			motor[motorLeft] = 12;
+			motor[motorRight] = 18;
 		}
 		else if(distance >=150 )
 		{
 				nxtDisplayCenteredTextLine(3, "FINISH");
+				playtone(500, 10);
 				motor[motorLeft] = 7;
-				motor[motorRight] = speed;
-				while(true)
-					{
-						nxtDisplayCenteredTextLine(3, "Sensor Value: %d", SensorValue[sensorLightActive]);
-						if (SensorValue[sensorLightActive] > 30)
-							{
-								motor[motorLeft] = .2 * speed;
-								motor[motorRight] = 1 * speed;
-								wait1Msec(1);
-								}
-								else
-									{
-										motor[motorLeft] = 1 * speed;
-										motor[motorRight] = .2 * speed;
-										}
-										}
+				motor[motorRight] = 18;
+				wait1Msec(3000);
+				done = true;
+
+					break;
+
 
 		}
 		else if(distance >= 30)
 		{
 			nxtDisplayCenteredTextLine(3, "TURN LEFT");
-			motor[motorLeft] = 15;
-			motor[motorRight] = 20;
+			playtone(800, 10);
+			motor[motorLeft] = 18;
+			motor[motorRight] = 12;
 		}
-		wait1Msec(250);
+		wait1Msec(10);
+	}
+
+	if(done == true)
+	{
+		while(true)
+	{
+		nxtDisplayCenteredTextLine(3, "Sensor Value: %d", SensorValue[sensorLightActive]);
+
+		if (SensorValue[sensorLightActive] > 30)
+		{
+			motor[motorLeft] = .2 * speed;
+			motor[motorRight] = 1 * speed;
+			wait1Msec(1);
+		}
+		else
+		{
+			motor[motorLeft] = 1 * speed;
+			motor[motorRight] = .2 * speed;
+		}
+
+	}
+
 	}
 
 }
