@@ -13,7 +13,7 @@ task main()
 int distance = 0;
 bool done = false;
 
-	while(!done)
+	while(done==false)
 	{
 		distance = SensorValue[ultrasonic];
 
@@ -21,38 +21,25 @@ bool done = false;
 		if(distance < 30)
 		{
 			nxtDisplayCenteredTextLine(3, "TURN RIGHT");
-			motor[motorLeft] = 20;
-			motor[motorRight] = 15;
+			motor[motorLeft] = 15;
+			motor[motorRight] = 20;
 		}
 		else if(distance >=150 )
 		{
 				nxtDisplayCenteredTextLine(3, "FINISH");
 				motor[motorLeft] = 7;
 				motor[motorRight] = speed;
-				while(true)
-					{
-						nxtDisplayCenteredTextLine(3, "Sensor Value: %d", SensorValue[sensorLightActive]);
-						if (SensorValue[sensorLightActive] > 30)
-							{
-								motor[motorLeft] = .2 * speed;
-								motor[motorRight] = 1 * speed;
-								wait1Msec(1);
-								}
-								else
-									{
-										motor[motorLeft] = 1 * speed;
-										motor[motorRight] = .2 * speed;
-										}
-										}
-
+				wait1msec(400);
+				done=true;
 		}
+
 		else if(distance >= 30)
 		{
 			nxtDisplayCenteredTextLine(3, "TURN LEFT");
-			motor[motorLeft] = 15;
-			motor[motorRight] = 20;
+			motor[motorLeft] = 20;
+			motor[motorRight] = 15;
 		}
-		wait1Msec(250);
+		wait1Msec(100);
 	}
 
 }
