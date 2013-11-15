@@ -50,7 +50,7 @@ bool followWall(int sensorName = USsensor, int maintain, int tooFar)
 		if(distance < maintain)
 		{
 			nxtDisplayCenteredTextLine(3, "TURN RIGHT");
-			turnRight(0.4, 80);
+			turnRight(0.6, 80);
 		}
 		else if(distance >= tooFar )
 		{
@@ -60,7 +60,7 @@ bool followWall(int sensorName = USsensor, int maintain, int tooFar)
 		else if(distance >= maintain)
 		{
 			nxtDisplayCenteredTextLine(3, "TURN LEFT");
-			turnLeft(0.4,80);
+			turnLeft(0.5,80);
 		}
 
 		return false;
@@ -88,7 +88,7 @@ bool findLine(int threshold, int direction, float rate = 0.4, int speed = 20)
 			turnRight(rate, speed);
 
 		}
-		if( SensorValue[lightSensor] < threshold)
+		if( SensorValue[lightSensor] > threshold)
 		{
 			return true;
 		}
@@ -123,21 +123,23 @@ bool lineFollow(int threshold_line, float rate ,int speed = 20)
 
 task main()
 {
+	nMotorEncoder[motorRight] = 0;
+	nMotorEncoder[motorLeft] = 0;
 	encoder = 0;
 
 	while(SensorValue[USsensor] >= 40)
 	{
 		foward(60);
 	}
-	while(!followWall(USsensor, 30, 255)){wait1Msec(10);}
+	while(!followWall(USsensor, 30, 200)){wait1Msec(10);}
 	encoder = ((nMotorEncoder[motorLeft]+nMotorEncoder[motorRight])/2);
-	while(!findLine( 30 , 1, 0.8, 20)){wait1Msec(10);}
-	while(findLine( 30 , 1, 0.8, 20)){wait1Msec(10);}
-	while(!findLine( 30 , 1, 0.8, 20)){wait1Msec(10);}
-	while(findLine( 30 , 1, 0.8, 20)){wait1Msec(10);}
-	while(!findLine( 30 , -1, 0.8, 20)){wait1Msec(10);}
+	while(findLine( 18 , -1, 0.9, 30)){wait1Msec(10);}
+	while(!findLine( 18 , -1, 1, 25)){wait1Msec(10);}
+	while(findLine( 18 , -1, 1, 25)){wait1Msec(10);}
+	while(!findLine( 18 , -1, 1, 25)){wait1Msec(10);}
+	while(findLine( 18 , 1, 1, 25)){wait1Msec(10);}
 	int encoder_init = ((nMotorEncoder[motorLeft]+nMotorEncoder[motorRight])/2);
-	while(!lineFollow( 30 ,0.6, 50) && encoder < (encoder_init+(6000))){
+	while(lineFollow( 18 ,0.6, 50) && encoder < (encoder_init+(6000))){
 		wait1Msec(10);
 		encoder = ((nMotorEncoder[motorLeft]+nMotorEncoder[motorRight])/2);
 	}
