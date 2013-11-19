@@ -1,5 +1,7 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTServo,  HTMotor)
 #pragma config(Hubs,  S2, HTMotor,  none,     none,     none)
+#pragma config(Sensor, S1,     ,               sensorI2CMuxController)
+#pragma config(Sensor, S2,     ,               sensorI2CMuxController)
 #pragma config(Sensor, S3,     touch,          sensorTouch)
 #pragma config(Sensor, S4,     irsensor,       sensorHiTechnicIRSeeker1200)
 #pragma config(Motor,  mtr_S1_C1_1,     LeftDrive,     tmotorTetrix, PIDControl, encoder)
@@ -10,8 +12,8 @@
 #pragma config(Motor,  mtr_S1_C4_2,     scoreArm,      tmotorTetrix, PIDControl, encoder)
 #pragma config(Motor,  mtr_S2_C1_1,     pullUp,        tmotorTetrix, openLoop)
 #pragma config(Motor,  mtr_S2_C1_2,     flagSpinner,   tmotorTetrix, openLoop)
-#pragma config(Servo,  srvo_S1_C3_1,    autoServo,               tServoNone)
-#pragma config(Servo,  srvo_S1_C3_2,    servo2,               tServoNone)
+#pragma config(Servo,  srvo_S1_C3_1,    servo1,            tServoStandard)
+#pragma config(Servo,  srvo_S1_C3_2,    autoServo,               tServoNone)
 #pragma config(Servo,  srvo_S1_C3_3,    servo3,               tServoNone)
 #pragma config(Servo,  srvo_S1_C3_4,    servo4,               tServoNone)
 #pragma config(Servo,  srvo_S1_C3_5,    servo5,               tServoNone)
@@ -126,20 +128,22 @@ task main()
 
 	initializeRobot();
 
-  waitForStart(); // Wait for the beginning of autonomous phase.
+  //waitForStart(); // Wait for the beginning of autonomous phase.
 
- while(SensorValue[irsensor] < 5)
-{
-	motor[LeftDrive] = -40;
-	motor[RightDrive] = -40;
-	wait1Msec(5);
-}
+// while(SensorValue[irsensor] < 5)
+//{
+//	motor[LeftDrive] = -40;
+//	motor[RightDrive] = -40;
+//	wait1Msec(5);
+//}
 
-	motor[RightDrive] = 0;
-	motor[LeftDrive] = 0;
-	wait1Msec(500);
+	//motor[RightDrive] = 0;
+	//motor[LeftDrive] = 0;
+	//wait1Msec(500);
 
 	servoTarget[autoServo] = 0;
+
+	wait1Msec(30000;
 
 
 
