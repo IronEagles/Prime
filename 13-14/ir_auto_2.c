@@ -28,8 +28,8 @@ void initializeRobot()
   // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
 	//servoTarget[Wrist] = 255;
 
-  nMotorEncoder[motorRight] = 0;
-	nMotorEncoder[motorLeft] = 0;
+  nMotorEncoder[RightDrive] = 0;
+	nMotorEncoder[LeftDrive] = 0;
 
   return;
 }
@@ -69,29 +69,34 @@ task main()
   waitForStart(); // Wait for the beginning of autonomous phase.
 
   	StartTask(heading);
-  	wait1Msec(100);
+  	wait1Msec(1000);
 
   	//Turn 45 degrees
-  	motor[LeftDrive] = 30;
+  	/*motor[LeftDrive] = 80;
 	motor[RightDrive] = -30;
 
 	while(true)
 	{
 		nxtDisplayCenteredTextLine(3, "Heading: %d", currHeading);
-		wait1Msec(10);
-		if (currHeading > 45.0)
+		wait1Msec(5);
+		if (currHeading > 30.0 && currHeading < 60.0 )
 		{
 			break;
 	  }
 	}
 
 	motor[LeftDrive] = 0;
-	motor[RightDrive] = 0;
+	motor[RightDrive] = 0;*/
+
 
 	//drive straign until irsensor
 
- while(SensorValue[irsensor] < 5)
+	nMotorEncoder[RightDrive] = 0;
+	nMotorEncoder[LeftDrive] = 0;
+
+ while(SensorValue[irsensor] < 6)
 {
+		nxtDisplayCenteredTextLine(3, "IR: %d", SensorValue[irsensor]);
 	motor[LeftDrive] = 40;
 	motor[RightDrive] = 40;
 	wait1Msec(5);
@@ -102,6 +107,91 @@ task main()
 	wait1Msec(500);
 
 	servoTarget[autoServo] = 200;
+	wait1Msec(500);
+	servoTarget[autoServo] = 255;
+	wait1Msec(500);
+
+	//long drive along wall with IR score
+
+	while(nMotorEncoder[RightDrive] < 4*360*4)
+	{
+		motor[RightDrive] = 40;
+		motor[LeftDrive] = 40;
+	}
+
+	motor[RightDrive] = 0;
+	motor[LeftDrive] = 0;
+	currHeading = 0.0;
+	wait1Msec(500);
+
+	//turn 90 degrees first
+
+	motor[LeftDrive] = -70;
+	motor[RightDrive] = 70;
+
+	while(true)
+	{
+		nxtDisplayCenteredTextLine(3, "Heading: %d", currHeading);
+		wait1Msec(10);
+		if (currHeading >= 300.0 && currHeading < 315)
+		{
+			break;
+	  }
+	}
+
+	motor[LeftDrive] = 0;
+	motor[RightDrive] = 0;
+	nMotorEncoder[RightDrive] = 0;
+	nMotorEncoder[LeftDrive] = 0;
+	wait1Msec(100);
+
+	//drive 2 feet before ramp turn
+
+	while(nMotorEncoder[RightDrive] < 4*360*2)
+	{
+		motor[RightDrive] = 40;
+		motor[LeftDrive] = 40;
+	}
+
+	motor[RightDrive] = 0;
+	motor[LeftDrive] = 0;
+	currHeading = 0.0;
+	wait1Msec(100);
+
+	//second 90 degree turn
+
+	motor[LeftDrive] = -70;
+	motor[RightDrive] = 70;
+
+	while(true)
+	{
+		nxtDisplayCenteredTextLine(3, "Heading: %d", currHeading);
+		wait1Msec(10);
+		if (currHeading >= 240.0 && currHeading < 260)
+		{
+			break;
+	  }
+	}
+
+	motor[LeftDrive] = 0;
+	motor[RightDrive] = 0;
+	nMotorEncoder[RightDrive] = 0;
+	nMotorEncoder[LeftDrive] = 0;
+	wait1Msec(100);
+
+	//drive onto ramp
+
+	while(nMotorEncoder[RightDrive] < 4*360*4)
+	{
+		motor[RightDrive] = 70;
+		motor[LeftDrive] = 70;
+	}
+
+	motor[RightDrive] = 0;
+	motor[LeftDrive] = 0;
+	currHeading = 0.0;
+	wait1Msec(100);
+
 
 	wait10Msec(2000);
 
