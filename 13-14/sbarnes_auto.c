@@ -68,6 +68,12 @@ void halt(){
 void resetEncoders(){
 	nMotorEncoder[RightDrive] = 0;
 	nMotorEncoder[LeftDrive] = 0;
+	wait1Msec(100);
+}
+
+void tareHeading(){
+	currHeading = 0;
+	wait1Msec(100);
 }
 
 // ==================================================================================================
@@ -79,18 +85,17 @@ task heading()
 	float curRate = 0.0;
 	HTGYROstartCal(GYRO);
    while (true) {
-   	time1[T1] = 0;
-    	curRate = HTGYROreadRot(GYRO);
-    	if (abs(curRate) > 3) {
-      	prevHeading = currHeading;
-      	currHeading = prevHeading + (curRate * delTime);
-      	if (currHeading > 360) currHeading -= 360;
-      	else if (currHeading < 0) currHeading += 360;
-    		}
-    nxtDisplayTextLine(4, "Curr = %f", currHeading);
-   	wait1Msec(5);
-    	delTime = ((float)time1[T1]) / 1000;
-    	//delTime /= 1000;
+     time1[T1] = 0;
+     curRate = HTGYROreadRot(GYRO);
+     if (abs(curRate) > 3) {
+       prevHeading = currHeading;
+       currHeading = prevHeading + (curRate * delTime);
+       if (currHeading > 360) currHeading -= 360;
+       else if (currHeading < 0) currHeading += 360;
+     }
+  nxtDisplayTextLine(4, "Curr = %f", currHeading);
+  wait1Msec(5);
+  delTime = ((float)time1[T1]) / 1000;
 	}
 }
 
@@ -100,7 +105,6 @@ void initializeRobot()
 {
   // Place code here to sinitialize servos to starting positions.
   // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
-	//servoTarget[Wrist] = 255;
 
 	// Initialize encoders
   resetEncoders();
@@ -112,40 +116,33 @@ void initializeRobot()
   return;
 }
 
-
 task main()
 {
 	initializeRobot();
   waitForStart(); // Wait for the beginning of autonomous phase.
 
 
-
 	// STEP 1: Drive straight until irsensor
 	resetEncoders();
-  while(SensorValue[irsensor] < 6){
+  while(SensorValue[irsensor] < 4){
 			nxtDisplayCenteredTextLine(3, "IR: %d", SensorValue[irsensor]);
 			moveForward(SPEED);
 			wait1Msec(5);
 	}
-	halt();
-	wait1Msec(500);
-
+	moveForward(SPEED);
+	//halt(); Disabled. We're going to try and deposit the block without stopping
+	wait1Msec (500);
 	// STEP 2: Deploy auto-scoring arm
 	servoTarget[autoServo] = 200;
-	wait1Msec(500);
+	wait1Msec(100);
 	servoTarget[autoServo] = 255;
 	wait1Msec(500);
 
-
 	// STEP 3: long drive along wall with IR score
-	while(nMotorEncoder[RightDrive] < 4*360*4)
-	{
+	while(nMotorEncoder[RightDrive] < 4*360*4.6)
 		moveForward(SPEED);
-	}
 	halt();
-	currHeading = 0.0;
-	wait1Msec(500);
-
+	tareHeading();
 
 	//STEP 4: Turn 90 degrees first
 	motor[LeftDrive] = -70;
@@ -158,36 +155,28 @@ task main()
 	}
 	halt();
 	resetEncoders();
-	wait1Msec(100);
 
 	//STEP 5: Drive 2 feet before ramp turn
 	while(nMotorEncoder[RightDrive] < 4*360*2)
 		moveForward(SPEED);
 	halt();
-	currHeading = 0.0;
-	wait1Msec(100);
-
+	tareHeading();
 
 	//STEP 6: Second 90 degree turn
-	motor[LeftDrive] = -70;
+	motor[LeftDrive] = -90;
 	motor[RightDrive] = 70;
 	while(true)
 	{
 		nxtDisplayCenteredTextLine(3, "Heading: %d", currHeading);
 		wait1Msec(10);
-		if (currHeading >= 240.0 && currHeading < 260) break;
+		if (currHeading >= 205.0 && currHeading < 225.0) break;
 	}
 	halt();
 	resetEncoders();
-	wait1Msec(100);
-
 
 	//STEP 7: Drive onto ramp
-	while(nMotorEncoder[RightDrive] < 4*360*4)
-	{
+	while(nMotorEncoder[RightDrive] < 4*360*3.25)
 		moveForward(70);
-	}
 	halt();
-	currHeading = 0.0;
-	wait1Msec(100);
+	tareHeading();
 }

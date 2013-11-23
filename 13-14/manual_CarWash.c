@@ -30,5 +30,10 @@ task main()
 			{
 				motor[scoreWrist] = 40;
 			}
+			else
+			{
+				motor[scoreArm] = 0;
+				motor[scoreWrist] = 0;
+			}
 		}
 }
