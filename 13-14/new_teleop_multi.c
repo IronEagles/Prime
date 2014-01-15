@@ -1,6 +1,6 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTServo,  HTMotor)
 #pragma config(Hubs,  S2, HTMotor,  none,     none,     none)
-#pragma config(Sensor, S3,     touch,          sensorHiTechnicTouchMux)
+#pragma config(Sensor, S3,     HTSMUX,          sensorI2CCustom)
 #pragma config(Motor,  mtr_S1_C1_1,     LeftDrive,     tmotorTetrix, PIDControl, encoder)
 #pragma config(Motor,  mtr_S1_C1_2,     RightDrive,    tmotorTetrix, PIDControl, encoder)
 #pragma config(Motor,  mtr_S1_C2_1,     scoreWrist,    tmotorTetrix, PIDControl, encoder)
@@ -22,8 +22,15 @@ Controls list
 Joy 1 sticks = driving
 
 */
-
+#include "drivers/hitechnic-sensormux.h"
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
+#include "drivers/hitechnic-irseeker-v2.h"
+#include "drivers/lego-touch.h"
+
+const tMUXSensor irsensor = msensor_S3_3;
+const tMUXSensor topTouch = msensor_S3_4;
+const tMUXSensor bottomTouch = msensor_S3_1;
+//const tMUXSensor downTouch = msensor_S3_2;
 
 void initializeRobot()
 {
@@ -105,15 +112,29 @@ while(true)
 
     motor[scoreWrist] = ( joystick.joy2_y2) * 100 / speed_divisor_c2;
   }
-
-  if (abs(joystick.joy2_y1) < 10 || SensorValue[touch] == 1)
+// scoreArm code!!!
+  if (abs(joystick.joy2_y1) < 10)
  		{
   		motor[scoreArm] = 0;
   	}
-  else
-  {
-  	motor[scoreArm] = (( -joystick.joy2_y1) * 100) / speed_divisor_arm;
-  }
+  	else if (joystick.joy2_y1 < 0 && TSreadState(bottomTouch) == false)
+  	{
+  		motor[scoreArm] = (( -joystick.joy2_y1) * 100) / speed_divisor_arm;
+  	}
+  	else if (joystick.joy2_y1 > 0 && TSreadState(topTouch) == false)
+  	{
+  		motor[scoreArm] = (( -joystick.joy2_y1) * 100) / speed_divisor_arm;
+  	}
+  	else if (joystick.joy2_y1 < 0 && TSreadState(bottomTouch) == true)
+  	{
+  		motor[scoreArm] = 0;
+  	}
+  	else if (joystick.joy2_y1 > 0 && TSreadState(topTouch) == true)
+  	{
+  		motor[scoreArm] = 0;
+  		motor[scoreWrist] = ( joystick.joy2_y2) * 100 / speed_divisor_c2;
+  	}
+
 
 //flag spinner code
   if (joy1Btn(4)==1)

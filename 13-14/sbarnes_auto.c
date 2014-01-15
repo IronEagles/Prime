@@ -120,14 +120,21 @@ task main()
 {
 	initializeRobot();
   waitForStart(); // Wait for the beginning of autonomous phase.
+  int count = 0;
 
 
 	// STEP 1: Drive straight until irsensor
 	resetEncoders();
-  while(SensorValue[irsensor] < 4){
+  while(SensorValue[irsensor] < 4 && nMotorEncoder[RightDrive] < 4*360*4.4){
 			nxtDisplayCenteredTextLine(3, "IR: %d", SensorValue[irsensor]);
 			moveForward(SPEED);
 			wait1Msec(5);
+			count++;
+			if( count > 1000)
+			{
+				halt();
+				wait1Msec(30000);
+			}
 	}
 	moveForward(SPEED);
 	//halt(); Disabled. We're going to try and deposit the block without stopping
@@ -137,46 +144,92 @@ task main()
 	wait1Msec(100);
 	servoTarget[autoServo] = 255;
 	wait1Msec(500);
-
 	// STEP 3: long drive along wall with IR score
-	while(nMotorEncoder[RightDrive] < 4*360*4.6)
+	count = 0;
+	while(nMotorEncoder[RightDrive] < 4*360*5.4)
+	{
 		moveForward(SPEED);
+		wait1Msec(5);
+			count++;
+			if( count > 1000)
+			{
+				halt();
+				wait1Msec(30000);
+			}
+	}
 	halt();
 	tareHeading();
 
 	//STEP 4: Turn 90 degrees first
+	count = 0;
 	motor[LeftDrive] = -70;
 	motor[RightDrive] = 70;
 	while(true)
 	{
 		nxtDisplayCenteredTextLine(3, "Heading: %d", currHeading);
-		wait1Msec(10);
+		//wait1Msec(10);
 		if (currHeading >= 300.0 && currHeading < 315) break;
+
+		wait1Msec(5);
+			count++;
+			if( count > 500)
+			{
+				halt();
+				wait1Msec(30000);
+			}
 	}
 	halt();
 	resetEncoders();
 
 	//STEP 5: Drive 2 feet before ramp turn
-	while(nMotorEncoder[RightDrive] < 4*360*2)
+	count = 0;
+	while(nMotorEncoder[RightDrive] < 4*360*1.7)
+	{
 		moveForward(SPEED);
+		wait1Msec(5);
+			count++;
+			if( count > 500)
+			{
+				halt();
+				wait1Msec(30000);
+			}
+	}
 	halt();
 	tareHeading();
 
 	//STEP 6: Second 90 degree turn
+	count = 0;
 	motor[LeftDrive] = -90;
 	motor[RightDrive] = 70;
 	while(true)
 	{
 		nxtDisplayCenteredTextLine(3, "Heading: %d", currHeading);
 		wait1Msec(10);
-		if (currHeading >= 205.0 && currHeading < 225.0) break;
+		if (currHeading >= 225.0 && currHeading < 245.0) break;
+		wait1Msec(5);
+			count++;
+			if( count > 1000)
+			{
+				halt();
+				wait1Msec(30000);
+			}
 	}
 	halt();
 	resetEncoders();
 
 	//STEP 7: Drive onto ramp
-	while(nMotorEncoder[RightDrive] < 4*360*3.25)
+	count = 0;
+	while(nMotorEncoder[RightDrive] < 4*360*3.15)
+	{
 		moveForward(70);
+		wait1Msec(5);
+			count++;
+			if( count > 500)
+			{
+				halt();
+				wait1Msec(30000);
+			}
+	}
 	halt();
 	tareHeading();
 }
