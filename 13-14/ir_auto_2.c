@@ -21,7 +21,6 @@
 #define BLUETAPE 35
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 
-
 void initializeRobot()
 {
   // Place code here to sinitialize servos to starting positions.
