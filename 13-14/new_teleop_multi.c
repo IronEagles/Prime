@@ -27,9 +27,9 @@ Joy 1 sticks = driving
 #include "drivers/hitechnic-irseeker-v2.h"
 #include "drivers/lego-touch.h"
 
-const tMUXSensor irsensor = msensor_S3_3;
-const tMUXSensor topTouch = msensor_S3_4;
-const tMUXSensor bottomTouch = msensor_S3_1;
+//const tMUXSensor irsensor = msensor_S3_2;
+const tMUXSensor topTouch = msensor_S3_1;
+const tMUXSensor bottomTouch = msensor_S3_4;
 //const tMUXSensor downTouch = msensor_S3_2;
 
 void initializeRobot()
@@ -46,6 +46,7 @@ task main()
 {
 	initializeRobot();
 	getJoystickSettings(joystick);
+	bool armRaising = false;
 	waitForStart();   // wait for start of tele-op phase
 
 	int armStop = 0;
@@ -85,6 +86,7 @@ while(true)
 				motor[liftArm] = 0;
 			}
 
+
 //pull up motor code
 		if (joy2Btn(3)==1)
 			{
@@ -119,21 +121,51 @@ while(true)
   	}
   	else if (joystick.joy2_y1 < 0 && TSreadState(bottomTouch) == false)
   	{
+  		armRaising = false;
   		motor[scoreArm] = (( -joystick.joy2_y1) * 100) / speed_divisor_arm;
   	}
   	else if (joystick.joy2_y1 > 0 && TSreadState(topTouch) == false)
   	{
+  		armRaising = false;
   		motor[scoreArm] = (( -joystick.joy2_y1) * 100) / speed_divisor_arm;
   	}
   	else if (joystick.joy2_y1 < 0 && TSreadState(bottomTouch) == true)
   	{
+  		armRaising = false;
   		motor[scoreArm] = 0;
   	}
   	else if (joystick.joy2_y1 > 0 && TSreadState(topTouch) == true)
   	{
+  		armRaising = false;
   		motor[scoreArm] = 0;
   		motor[scoreWrist] = ( joystick.joy2_y2) * 100 / speed_divisor_c2;
   	}
+  	else if (joy2Btn(6) == 1 || armRaising)
+		{
+			if (TSreadState(topTouch) == false)
+			{
+				motor[scoreArm] = -100;
+				armRaising = true;
+			}
+			else if (TSreadState(topTouch) == true)
+			{
+				motor[scoreArm] = 0;
+				armRaising = false;
+			}
+		}
+		else if (joy2Btn(8) == 1 || armRaising)
+		{
+			if (TSreadState(bottomTouch) == false)
+			{
+				motor[scoreArm] = 100;
+				armRaising = true;
+			}
+			else if (TSreadState(bottomTouch) == true)
+			{
+				motor[scoreArm] = 0;
+				armRaising = false;
+			}
+		}
 
 
 //flag spinner code
