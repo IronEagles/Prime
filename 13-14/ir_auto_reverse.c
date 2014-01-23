@@ -22,20 +22,12 @@
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 #include "drivers/hitechnic-gyro.h"
 
-<<<<<<< HEAD
-void initializeRobot()
-{
-  // Place code here to sinitialize servos to starting positions.
-  // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
-	//servoTarget[Wrist] = 255;
-=======
 // MACROS
 #define BLUETAPE 35
-#define SPEED 40
+#define SPEED -40
 
 // GLOBALS
 float currHeading = 0.0;
->>>>>>> c71b58b7d9bd95c742c14f22d157419e8c1f657c
 
 // ==================================================================================================
 
@@ -130,7 +122,7 @@ task main()
 
 	// STEP 1: Drive straight until irsensor
 	resetEncoders();
-  while(SensorValue[irsensor] < 6){
+  while(SensorValue[irsensor] > 6 || SensorValue[irsensor] ==0){
 			nxtDisplayCenteredTextLine(3, "IR: %d", SensorValue[irsensor]);
 			moveForward(SPEED);
 			wait1Msec(5);
@@ -146,7 +138,7 @@ task main()
 
 
 	// STEP 3: long drive along wall with IR score
-	while(nMotorEncoder[RightDrive] < 4*360*5)
+	while(nMotorEncoder[RightDrive] > -(4*360*4))
 	{
 		moveForward(SPEED);
 	}
@@ -156,20 +148,20 @@ task main()
 
 
 	//STEP 4: Turn 90 degrees first
-	motor[LeftDrive] = -70;
-	motor[RightDrive] = 70;
+	motor[LeftDrive] = 70;
+	motor[RightDrive] = -70;
 	while(true)
 	{
 		nxtDisplayCenteredTextLine(3, "Heading: %d", currHeading);
 		wait1Msec(10);
-		if (currHeading >= 300.0 && currHeading < 315) break;
+		if (currHeading >= 60.0 && currHeading < 80.0) break;
 	}
 	halt();
 	resetEncoders();
 	wait1Msec(100);
 
 	//STEP 5: Drive 2 feet before ramp turn
-	while(nMotorEncoder[RightDrive] < 4*360*2)
+	while(nMotorEncoder[RightDrive] > -(4*360*2))
 		moveForward(SPEED);
 	halt();
 	currHeading = 0.0;
@@ -177,13 +169,13 @@ task main()
 
 
 	//STEP 6: Second 90 degree turn
-	motor[LeftDrive] = -70;
-	motor[RightDrive] = 70;
+	motor[LeftDrive] = 70;
+	motor[RightDrive] = -70;
 	while(true)
 	{
 		nxtDisplayCenteredTextLine(3, "Heading: %d", currHeading);
 		wait1Msec(10);
-		if (currHeading >= 240.0 && currHeading < 260) break;
+		if (currHeading >= 120.0 && currHeading < 140.0) break;
 	}
 	halt();
 	resetEncoders();
@@ -191,9 +183,9 @@ task main()
 
 
 	//STEP 7: Drive onto ramp
-	while(nMotorEncoder[RightDrive] < 4*360*4)
+	while(nMotorEncoder[RightDrive] >0-(4*360*4))
 	{
-		moveForward(70);
+		moveForward(-70);
 	}
 	halt();
 	currHeading = 0.0;

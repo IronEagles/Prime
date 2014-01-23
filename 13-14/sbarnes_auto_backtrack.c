@@ -22,20 +22,12 @@
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 #include "drivers/hitechnic-gyro.h"
 
-<<<<<<< HEAD
-void initializeRobot()
-{
-  // Place code here to sinitialize servos to starting positions.
-  // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
-	//servoTarget[Wrist] = 255;
-=======
 // MACROS
 #define BLUETAPE 35
 #define SPEED 40
 
 // GLOBALS
 float currHeading = 0.0;
->>>>>>> c71b58b7d9bd95c742c14f22d157419e8c1f657c
 
 // ==================================================================================================
 
@@ -68,6 +60,12 @@ void moveForward(int speed = 100)
 	motor[RightDrive] = speed;
 }
 
+void moveBackward(int speed = 100)
+{
+	motor[LeftDrive] = -1 * speed;
+	motor[RightDrive] = -1 * speed;
+}
+
 void halt(){
 	motor[RightDrive] = 0;
 	motor[LeftDrive] = 0;
@@ -76,6 +74,12 @@ void halt(){
 void resetEncoders(){
 	nMotorEncoder[RightDrive] = 0;
 	nMotorEncoder[LeftDrive] = 0;
+	wait1Msec(100);
+}
+
+void tareHeading(){
+	currHeading = 0;
+	wait1Msec(100);
 }
 
 // ==================================================================================================
@@ -87,18 +91,17 @@ task heading()
 	float curRate = 0.0;
 	HTGYROstartCal(GYRO);
    while (true) {
-   	time1[T1] = 0;
-    	curRate = HTGYROreadRot(GYRO);
-    	if (abs(curRate) > 3) {
-      	prevHeading = currHeading;
-      	currHeading = prevHeading + (curRate * delTime);
-      	if (currHeading > 360) currHeading -= 360;
-      	else if (currHeading < 0) currHeading += 360;
-    		}
-    nxtDisplayTextLine(4, "Curr = %f", currHeading);
-   	wait1Msec(5);
-    	delTime = ((float)time1[T1]) / 1000;
-    	//delTime /= 1000;
+     time1[T1] = 0;
+     curRate = HTGYROreadRot(GYRO);
+     if (abs(curRate) > 3) {
+       prevHeading = currHeading;
+       currHeading = prevHeading + (curRate * delTime);
+       if (currHeading > 360) currHeading -= 360;
+       else if (currHeading < 0) currHeading += 360;
+     }
+  nxtDisplayTextLine(4, "Curr = %f", currHeading);
+  wait1Msec(5);
+  delTime = ((float)time1[T1]) / 1000;
 	}
 }
 
@@ -108,7 +111,6 @@ void initializeRobot()
 {
   // Place code here to sinitialize servos to starting positions.
   // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
-	//servoTarget[Wrist] = 255;
 
 	// Initialize encoders
   resetEncoders();
@@ -120,82 +122,55 @@ void initializeRobot()
   return;
 }
 
-
 task main()
 {
 	initializeRobot();
   waitForStart(); // Wait for the beginning of autonomous phase.
-
+  int count = 0;
 
 
 	// STEP 1: Drive straight until irsensor
 	resetEncoders();
-  while(SensorValue[irsensor] < 6){
+  while(SensorValue[irsensor] < 4 && nMotorEncoder[RightDrive] < 4*360*4.4){
 			nxtDisplayCenteredTextLine(3, "IR: %d", SensorValue[irsensor]);
 			moveForward(SPEED);
 			wait1Msec(5);
+			count++;
+			if( count > 1000)
+			{
+				halt();
+				wait1Msec(30000);
+			}
 	}
-	halt();
-	wait1Msec(500);
+	moveForward(SPEED);
+	//halt(); Disabled. We're going to try and deposit the block without stopping
+	wait1Msec (500);
+
 
 	// STEP 2: Deploy auto-scoring arm
 	servoTarget[autoServo] = 200;
-	wait1Msec(500);
+	wait1Msec(100);
 	servoTarget[autoServo] = 255;
 	wait1Msec(500);
 
 
-	// STEP 3: long drive along wall with IR score
-	while(nMotorEncoder[RightDrive] < 4*360*5)
-	{
-		moveForward(SPEED);
+	// STEP 3: Go backwards until encoder=0
+	 while(nMotorEncoder[RightDrive] > 0){
+			moveBackward(SPEED);
+			wait1Msec(5);
 	}
 	halt();
-	currHeading = 0.0;
-	wait1Msec(500);
 
 
-	//STEP 4: Turn 90 degrees first
-	motor[LeftDrive] = -70;
-	motor[RightDrive] = 70;
-	while(true)
+	// STEP 4: Turn 90 degrees Right
+	tareHeading();
+	while (currHeading >= 85 && currHeading < 95)
 	{
-		nxtDisplayCenteredTextLine(3, "Heading: %d", currHeading);
-		wait1Msec(10);
-		if (currHeading >= 300.0 && currHeading < 315) break;
+		//TODO: Add code to turn right
 	}
-	halt();
-	resetEncoders();
-	wait1Msec(100);
+//TODO: Move forward to turn on the ramp
+//TODO: Turn on to ramp
+//TODO: Drive onto the ramp
+//TODO: Celebrate
 
-	//STEP 5: Drive 2 feet before ramp turn
-	while(nMotorEncoder[RightDrive] < 4*360*2)
-		moveForward(SPEED);
-	halt();
-	currHeading = 0.0;
-	wait1Msec(100);
-
-
-	//STEP 6: Second 90 degree turn
-	motor[LeftDrive] = -70;
-	motor[RightDrive] = 70;
-	while(true)
-	{
-		nxtDisplayCenteredTextLine(3, "Heading: %d", currHeading);
-		wait1Msec(10);
-		if (currHeading >= 240.0 && currHeading < 260) break;
-	}
-	halt();
-	resetEncoders();
-	wait1Msec(100);
-
-
-	//STEP 7: Drive onto ramp
-	while(nMotorEncoder[RightDrive] < 4*360*4)
-	{
-		moveForward(70);
-	}
-	halt();
-	currHeading = 0.0;
-	wait1Msec(100);
 }

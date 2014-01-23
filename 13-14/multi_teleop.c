@@ -1,6 +1,6 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTServo,  HTMotor)
 #pragma config(Hubs,  S2, HTMotor,  none,     none,     none)
-#pragma config(Sensor, S3,     touch,          sensorHiTechnicTouchMux)
+#pragma config(Sensor, S4,     HTSMUX,          sensorI2CCustom)
 #pragma config(Motor,  mtr_S1_C1_1,     LeftDrive,     tmotorTetrix, PIDControl, encoder)
 #pragma config(Motor,  mtr_S1_C1_2,     RightDrive,    tmotorTetrix, PIDControl, encoder)
 #pragma config(Motor,  mtr_S1_C2_1,     scoreWrist,    tmotorTetrix, PIDControl, encoder)
@@ -22,8 +22,15 @@ Controls list
 Joy 1 sticks = driving
 
 */
-
+#include "drivers/hitechnic-sensormux.h"
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
+#include "drivers/hitechnic-irseeker-v2.h"
+#include "drivers/lego-touch.h"
+
+//const tMUXSensor irsensor = msensor_S3_2;
+const tMUXSensor topTouch = msensor_S4_1;
+const tMUXSensor bottomTouch = msensor_S4_3;
+//const tMUXSensor downTouch = msensor_S3_2;
 
 void initializeRobot()
 {
@@ -39,6 +46,8 @@ task main()
 {
 	initializeRobot();
 	getJoystickSettings(joystick);
+	bool armRaising = false;
+	bool armLowering = false;
 	waitForStart();   // wait for start of tele-op phase
 
 	int armStop = 0;
@@ -78,6 +87,7 @@ while(true)
 				motor[liftArm] = 0;
 			}
 
+
 //pull up motor code
 		if (joy2Btn(3)==1)
 			{
@@ -106,14 +116,66 @@ while(true)
     motor[scoreWrist] = ( joystick.joy2_y2) * 100 / speed_divisor_c2;
   }
 
-  if (abs(joystick.joy2_y1) < 10 || SensorValue[touch] == 1)
+
+// scoreArm code!!!
+  if (abs(joystick.joy2_y1) <= 10 && !armRaising && !armLowering && joy2Btn(6) != 1 && joy2Btn(8) != 1)
  		{
   		motor[scoreArm] = 0;
   	}
-  else
-  {
-  	motor[scoreArm] = (( -joystick.joy2_y1) * 100) / speed_divisor_arm;
-  }
+  	else if (joystick.joy2_y1 < -10 && TSreadState(bottomTouch) == false)
+  	{
+  		armLowering = false;
+  		armRaising = false;
+  		motor[scoreArm] = (( -joystick.joy2_y1) * 100) / speed_divisor_arm;
+  	}
+  	else if (joystick.joy2_y1 > 10 && TSreadState(topTouch) == false)
+  	{
+  		armRaising = false;
+  		armLowering=false;
+  		motor[scoreArm] = (( -joystick.joy2_y1) * 100) / speed_divisor_arm;
+  	}
+  	else if (joystick.joy2_y1 < -10 && TSreadState(bottomTouch) == true)
+  	{
+  		armLowering = false;
+  		armRaising = false;
+  		motor[scoreArm] = 0;
+  	}
+  	else if (joystick.joy2_y1 > 10 && TSreadState(topTouch) == true)
+  	{
+  		armRaising = false;
+  		armLowering=false;
+  		motor[scoreArm] = 0;
+  		motor[scoreWrist] = ( joystick.joy2_y2) * 100 / speed_divisor_c2;
+  	}
+  	else if (joy2Btn(6) == 1 || armRaising)
+		{
+			armLowering=false;
+			if (TSreadState(topTouch) == false)
+			{
+				motor[scoreArm] = -100;
+				armRaising = true;
+			}
+			else if (TSreadState(topTouch) == true)
+			{
+				motor[scoreArm] = 0;
+				armRaising = false;
+			}
+		}
+		else if (joy2Btn(8) == 1 || armLowering)
+		{
+			armRaising=false;
+			if (TSreadState(bottomTouch) == false)
+			{
+				motor[scoreArm] = 100;
+				armLowering = true;
+			}
+			else if (TSreadState(bottomTouch) == true)
+			{
+				motor[scoreArm] = 0;
+				armLowering = false;
+			}
+		}
+
 
 //flag spinner code
   if (joy1Btn(4)==1)
