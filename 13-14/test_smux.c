@@ -1,4 +1,4 @@
-#pragma config(Sensor, S3,     HTSMUX,          sensorI2CCustom)
+#pragma config(Sensor, S4,     HTSMUX,          sensorI2CCustom)
 
 
 #include "drivers/hitechnic-sensormux.h"
