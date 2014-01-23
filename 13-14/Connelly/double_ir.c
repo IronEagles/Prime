@@ -60,6 +60,12 @@ void moveForward(int speed = 100)
 	motor[RightDrive] = speed;
 }
 
+void moveBackward(int speed = 100)
+{
+	motor[LeftDrive] = -1 * speed;
+	motor[RightDrive] = -1 * speed;
+}
+
 void halt(){
 	motor[RightDrive] = 0;
 	motor[LeftDrive] = 0;
@@ -136,111 +142,36 @@ task main()
 				wait1Msec(30000);
 			}
 	}
-	while(SensorValue[irsensor] < 4 && nMotorEncoder[RightDrive] < 4*360*4.4){
-			nxtDisplayCenteredTextLine(3, "IR: %d", SensorValue[irsensor]);
-			moveForward(SPEED);
-			wait1Msec(5);
-			count++;
-			if( count > 1000)
-			{
-				halt();
-				wait1Msec(30000);
-			}
-	}
 	moveForward(SPEED);
 	//halt(); Disabled. We're going to try and deposit the block without stopping
 	wait1Msec (500);
+
+
 	// STEP 2: Deploy auto-scoring arm
 	servoTarget[autoServo] = 200;
 	wait1Msec(100);
 	servoTarget[autoServo] = 255;
 	wait1Msec(500);
-	// STEP 3: long drive along wall with IR score
-	count = 0;
-	while(nMotorEncoder[RightDrive] < 4*360*5.4)
-	{
-		moveForward(SPEED);
-		wait1Msec(5);
-			count++;
-			if( count > 1000)
-			{
-				halt();
-				wait1Msec(30000);
-			}
+
+
+	// STEP 3: Go backwards until encoder=0
+	 while(nMotorEncoder[RightDrive] > 0){
+			moveBackward(SPEED);
+			wait1Msec(5);
 	}
 	halt();
+
+
+	// STEP 4: Turn 90 degrees Right
 	tareHeading();
-
-	//STEP 4: Turn 90 degrees first
-	count = 0;
-	motor[LeftDrive] = -70;
-	motor[RightDrive] = 70;
-	while(true)
+	while (currHeading >= 300.0 && currHeading < 315)
 	{
-		nxtDisplayCenteredTextLine(3, "Heading: %d", currHeading);
-		//wait1Msec(10);
-		if (currHeading >= 300.0 && currHeading < 315) break;
 
-		wait1Msec(5);
-			count++;
-			if( count > 500)
-			{
-				halt();
-				wait1Msec(30000);
-			}
+		//TODO: Add code to turn right
 	}
-	halt();
-	resetEncoders();
+//TODO: Move forward to turn on the ramp
+//TODO: Turn on to ramp
+//TODO: Drive onto the ramp
+//TODO: Celebrate
 
-	//STEP 5: Drive 2 feet before ramp turn
-	count = 0;
-	while(nMotorEncoder[RightDrive] < 4*360*1.7)
-	{
-		moveForward(SPEED);
-		wait1Msec(5);
-			count++;
-			if( count > 500)
-			{
-				halt();
-				wait1Msec(30000);
-			}
-	}
-	halt();
-	tareHeading();
-
-	//STEP 6: Second 90 degree turn
-	count = 0;
-	motor[LeftDrive] = -90;
-	motor[RightDrive] = 70;
-	while(true)
-	{
-		nxtDisplayCenteredTextLine(3, "Heading: %d", currHeading);
-		wait1Msec(10);
-		if (currHeading >= 225.0 && currHeading < 245.0) break;
-		wait1Msec(5);
-			count++;
-			if( count > 1000)
-			{
-				halt();
-				wait1Msec(30000);
-			}
-	}
-	halt();
-	resetEncoders();
-
-	//STEP 7: Drive onto ramp
-	count = 0;
-	while(nMotorEncoder[RightDrive] < 4*360*3.15)
-	{
-		moveForward(70);
-		wait1Msec(5);
-			count++;
-			if( count > 500)
-			{
-				halt();
-				wait1Msec(30000);
-			}
-	}
-	halt();
-	tareHeading();
 }
