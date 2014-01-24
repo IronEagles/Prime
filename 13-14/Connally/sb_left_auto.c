@@ -1,7 +1,7 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTServo,  HTMotor)
 #pragma config(Hubs,  S2, HTMotor,  none,     none,     none)
 #pragma config(Sensor, S3,     GYRO,           sensorI2CHiTechnicGyro)
-#pragma config(Sensor, S4,     irsensor,       sensorHiTechnicIRSeeker1200)
+#pragma config(Sensor, S4,     HTSMUX,          sensorI2CCustom)
 #pragma config(Motor,  mtr_S1_C1_1,     LeftDrive,     tmotorTetrix, PIDControl, encoder)
 #pragma config(Motor,  mtr_S1_C1_2,     RightDrive,    tmotorTetrix, PIDControl, reversed, encoder)
 #pragma config(Motor,  mtr_S1_C2_1,     scoreWrist,    tmotorTetrix, PIDControl, encoder)
@@ -21,10 +21,18 @@
 // INCLUDES
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 #include "drivers/hitechnic-gyro.h"
+#include "drivers/hitechnic-sensormux.h"
+#include "drivers/hitechnic-irseeker-v2.h"
+#include "drivers/lego-touch.h"
+
+const tMUXSensor irsensor = msensor_S4_2;
+const tMUXSensor topTouch = msensor_S4_1;
+const tMUXSensor bottomTouch = msensor_S4_3;
+//const tMUXSensor downTouch = msensor_S3_2;
 
 // MACROS
 #define BLUETAPE 35
-#define SPEED 40
+#define SPEED -40
 
 // GLOBALS
 float currHeading = 0.0;
@@ -125,7 +133,7 @@ task main()
 
 	// STEP 1: Drive straight until irsensor
 	resetEncoders();
-  while(SensorValue[irsensor] < 4 && nMotorEncoder[RightDrive] < 4*360*3.2){
+  while((SensorValue[irsensor] > 6 || SensorValue[irsensor] ==0) && nMotorEncoder[RightDrive] > -1*4*360*4.4){
 			nxtDisplayCenteredTextLine(3, "IR: %d", SensorValue[irsensor]);
 			moveForward(SPEED);
 			wait1Msec(5);
@@ -146,7 +154,7 @@ task main()
 	wait1Msec(300);
 	// STEP 3: long drive along wall with IR score
 	count = 0;
-	while(nMotorEncoder[RightDrive] < 4*360*5.4)
+	while(nMotorEncoder[RightDrive] > -1*4*360*5.0)
 	{
 		moveForward(SPEED);
 		wait1Msec(5);
@@ -162,13 +170,13 @@ task main()
 
 	//STEP 4: Turn 90 degrees first
 	count = 0;
-	motor[LeftDrive] = -70;
-	motor[RightDrive] = 70;
+	motor[LeftDrive] = 50;
+	motor[RightDrive] = -70;
 	while(true)
 	{
 		nxtDisplayCenteredTextLine(3, "Heading: %d", currHeading);
 		//wait1Msec(10);
-		if (currHeading >= 300.0 && currHeading < 315) break;
+		if (currHeading >= 45.0 && currHeading < 65.0) break;
 
 		wait1Msec(5);
 			count++;
@@ -183,7 +191,7 @@ task main()
 
 	//STEP 5: Drive 2 feet before ramp turn
 	count = 0;
-	while(nMotorEncoder[RightDrive] < 4*360*2.0)
+	while(nMotorEncoder[RightDrive] > -1*4*360*2.5)
 	{
 		moveForward(SPEED);
 		wait1Msec(5);
@@ -199,13 +207,13 @@ task main()
 
 	//STEP 6: Second 90 degree turn
 	count = 0;
-	motor[LeftDrive] = -90;
-	motor[RightDrive] = 70;
+	motor[LeftDrive] = 30;
+	motor[RightDrive] = -90;
 	while(true)
 	{
 		nxtDisplayCenteredTextLine(3, "Heading: %d", currHeading);
 		wait1Msec(10);
-		if (currHeading >= 235.0 && currHeading < 255.0) break;
+		if (currHeading >= 95.0 && currHeading < 115.0) break;
 		wait1Msec(5);
 			count++;
 			if( count > 1000)
@@ -219,9 +227,9 @@ task main()
 
 	//STEP 7: Drive onto ramp
 	count = 0;
-	while(nMotorEncoder[RightDrive] < 4*360*3.8)
+	while(nMotorEncoder[RightDrive] > -1*4*360*5.2)
 	{
-		moveForward(70);
+		moveForward(-70);
 		wait1Msec(5);
 			count++;
 			if( count > 500)

@@ -1,7 +1,7 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTServo,  HTMotor)
 #pragma config(Hubs,  S2, HTMotor,  none,     none,     none)
 #pragma config(Sensor, S3,     GYRO,           sensorI2CHiTechnicGyro)
-#pragma config(Sensor, S4,     irsensor,       sensorHiTechnicIRSeeker1200)
+#pragma config(Sensor, S4,     HTSMUX,          sensorI2CCustom)
 #pragma config(Motor,  mtr_S1_C1_1,     LeftDrive,     tmotorTetrix, PIDControl, encoder)
 #pragma config(Motor,  mtr_S1_C1_2,     RightDrive,    tmotorTetrix, PIDControl, reversed, encoder)
 #pragma config(Motor,  mtr_S1_C2_1,     scoreWrist,    tmotorTetrix, PIDControl, encoder)
@@ -21,6 +21,14 @@
 // INCLUDES
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 #include "drivers/hitechnic-gyro.h"
+#include "drivers/hitechnic-sensormux.h"
+#include "drivers/hitechnic-irseeker-v2.h"
+#include "drivers/lego-touch.h"
+
+const tMUXSensor irsensor = msensor_S4_2;
+const tMUXSensor topTouch = msensor_S4_1;
+const tMUXSensor bottomTouch = msensor_S4_3;
+//const tMUXSensor downTouch = msensor_S3_2;
 
 // MACROS
 #define BLUETAPE 35
