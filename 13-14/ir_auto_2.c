@@ -24,6 +24,7 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 void initializeRobot()
 {
   // Place code here to sinitialize servos to starting positions.
@@ -77,6 +78,33 @@ void turnRight(float rate,int speed = 100){
 
 =======
 
+=======
+// MACROS
+#define BLUETAPE 35
+#define SPEED 40
+
+// GLOBALS
+float currHeading = 0.0;
+
+// ==================================================================================================
+
+// HELPERS
+void turnLeft(float rate ,int speed = 100){
+	if (speed > 100)
+		speed = 100;
+
+	if (rate > 1)
+		rate = 1;
+
+	motor[LeftDrive] = speed - speed*rate;
+	motor[RightDrive] = speed;
+}
+
+void turnRight(float rate,int speed = 100){
+	if (speed > 100)
+		speed = 100;
+
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
 	if (rate > 1)
 		rate = 1;
 
@@ -84,6 +112,9 @@ void turnRight(float rate,int speed = 100){
 	motor[RightDrive] = speed - speed*rate;
 }
 
+<<<<<<< HEAD
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
+=======
 >>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
 void moveForward(int speed = 100)
 {
@@ -126,6 +157,7 @@ task heading()
 }
 
 // ==================================================================================================
+<<<<<<< HEAD
 
 void initializeRobot()
 {
@@ -140,6 +172,22 @@ void initializeRobot()
 	StartTask(heading);
   wait1Msec(1000);
 
+=======
+
+void initializeRobot()
+{
+  // Place code here to sinitialize servos to starting positions.
+  // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
+	//servoTarget[Wrist] = 255;
+
+	// Initialize encoders
+  resetEncoders();
+
+	// Spawn heading tracking thread
+	StartTask(heading);
+  wait1Msec(1000);
+
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
   return;
 }
 
