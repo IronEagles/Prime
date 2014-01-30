@@ -25,6 +25,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 void initializeRobot()
 {
   // Place code here to sinitialize servos to starting positions.
@@ -52,6 +53,17 @@ float currHeading = 0.0;
 // ==================================================================================================
 
 >>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
+=======
+// MACROS
+#define BLUETAPE 35
+#define SPEED 40
+
+// GLOBALS
+float currHeading = 0.0;
+
+// ==================================================================================================
+
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
 // HELPERS
 void turnLeft(float rate ,int speed = 100){
 	if (speed > 100)
@@ -67,6 +79,7 @@ void turnLeft(float rate ,int speed = 100){
 void turnRight(float rate,int speed = 100){
 	if (speed > 100)
 		speed = 100;
+<<<<<<< HEAD
 <<<<<<< HEAD
 
 	if (rate > 1)
@@ -105,6 +118,9 @@ void turnRight(float rate,int speed = 100){
 		speed = 100;
 
 >>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
+=======
+
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
 	if (rate > 1)
 		rate = 1;
 
@@ -113,6 +129,9 @@ void turnRight(float rate,int speed = 100){
 }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
+=======
 >>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
 =======
 >>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
@@ -158,6 +177,7 @@ task heading()
 
 // ==================================================================================================
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 void initializeRobot()
 {
@@ -182,11 +202,30 @@ void initializeRobot()
 
 	// Initialize encoders
   resetEncoders();
+=======
+
+void initializeRobot()
+{
+  // Place code here to sinitialize servos to starting positions.
+  // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
+	//servoTarget[Wrist] = 255;
+
+	// Initialize encoders
+  resetEncoders();
 
 	// Spawn heading tracking thread
 	StartTask(heading);
   wait1Msec(1000);
 
+  return;
+}
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
+
+	// Spawn heading tracking thread
+	StartTask(heading);
+  wait1Msec(1000);
+
+<<<<<<< HEAD
 >>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
   return;
 }
@@ -199,6 +238,15 @@ task main()
 
 
 
+=======
+task main()
+{
+	initializeRobot();
+  waitForStart(); // Wait for the beginning of autonomous phase.
+
+
+
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
 	// STEP 1: Drive straight until irsensor
 	resetEncoders();
   while(SensorValue[irsensor] < 6){

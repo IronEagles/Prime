@@ -3,7 +3,11 @@
 #pragma config(Sensor, S3,     GYRO,           sensorI2CHiTechnicGyro)
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 #pragma config(Sensor, S4,     irsensor,       sensorHiTechnicIRSeeker1200)
+=======
+#pragma config(Sensor, S4,     HTSMUX,          sensorI2CCustom)
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
 =======
 #pragma config(Sensor, S4,     HTSMUX,          sensorI2CCustom)
 >>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
@@ -31,7 +35,10 @@
 #include "drivers/hitechnic-gyro.h"
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
+=======
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
 =======
 >>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
 #include "drivers/hitechnic-sensormux.h"
@@ -43,6 +50,9 @@ const tMUXSensor topTouch = msensor_S4_1;
 const tMUXSensor bottomTouch = msensor_S4_3;
 //const tMUXSensor downTouch = msensor_S3_2;
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
+=======
 >>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
 =======
 >>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
@@ -164,6 +174,7 @@ task main()
 	moveForward(SPEED);
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 	//halt(); Disabled. We're going to try and deposit the block without stopping
 	wait1Msec (500);
 	// STEP 2: Deploy auto-scoring arm
@@ -172,6 +183,8 @@ task main()
 	servoTarget[autoServo] = 255;
 	wait1Msec(300);
 =======
+=======
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
 =======
 >>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
 //halt(); Disabled motors
@@ -184,6 +197,9 @@ task main()
 	servoTarget[autoServo] = 255;
 	wait1Msec(500);
 <<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
+=======
 >>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
 =======
 >>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
