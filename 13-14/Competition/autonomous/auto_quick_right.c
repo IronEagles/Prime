@@ -18,68 +18,19 @@
 #pragma config(Servo,  srvo_S1_C3_6,    servo6,               tServoNone)
 // ==================================================================================================
 
-// INCLUDES
-#include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
-#include "drivers/hitechnic-gyro.h"
-#include "drivers/hitechnic-sensormux.h"
-#include "drivers/hitechnic-irseeker-v2.h"
-#include "drivers/lego-touch.h"
+// Filename: auto_quick_right.c
+// Description: Quickly score autonomous block in closest end basket and immediately turn left onto the ramp.
+// Last Modified: 1/29/14
 
-const tMUXSensor irsensor = msensor_S4_2;
-const tMUXSensor topTouch = msensor_S4_1;
-const tMUXSensor bottomTouch = msensor_S4_3;
-//const tMUXSensor downTouch = msensor_S3_2;
 
-// MACROS
-#define BLUETAPE 35
-#define SPEED 40
+
+#include "configuration.h"
+#include "helpers.h"
+
 
 // GLOBALS
-float currHeading = 0.0;
 
-// ==================================================================================================
-
-// HELPERS
-void turnLeft(float rate ,int speed = 100){
-	if (speed > 100)
-		speed = 100;
-
-	if (rate > 1)
-		rate = 1;
-
-	motor[LeftDrive] = speed - speed*rate;
-	motor[RightDrive] = speed;
-}
-
-void turnRight(float rate,int speed = 100){
-	if (speed > 100)
-		speed = 100;
-
-	if (rate > 1)
-		rate = 1;
-
-	motor[LeftDrive] = speed;
-	motor[RightDrive] = speed - speed*rate;
-}
-
-void moveForward(int speed = 100)
-{
-	motor[LeftDrive] = speed;
-	motor[RightDrive] = speed;
-}
-
-void halt(){
-	motor[RightDrive] = 0;
-	motor[LeftDrive] = 0;
-}
-
-void resetEncoders(){
-	nMotorEncoder[RightDrive] = 0;
-	nMotorEncoder[LeftDrive] = 0;
-}
-
-// ==================================================================================================
-
+//Tasks
 task heading()
 {
 	float delTime = 0.0;
@@ -100,16 +51,14 @@ task heading()
     	delTime = ((float)time1[T1]) / 1000;
     	//delTime /= 1000;
 	}
-}
 
-// ==================================================================================================
+}
+//*\\
+
+int direction = -1;
 
 void initializeRobot()
 {
-  // Place code here to sinitialize servos to starting positions.
-  // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
-	//servoTarget[Wrist] = 255;
-
 	// Initialize encoders
   resetEncoders();
 
@@ -122,32 +71,33 @@ void initializeRobot()
 
 task main()
 {
-initializeRobot();
-wait1Msec(2);
-waitForStart();
+	initializeRobot();
+	wait1Msec(2);
+	waitForStart();
 
-
-
-	while(nMotorEncoder[RightDrive] > -(4*360*1.3))
-	{
-		moveForward(-70);
+	// STEP 1: Move forward to the end basket
+	while(nMotorEncoder[RightDrive] > direction * DISTANCE_TO_BASKET_FROM_INIT)
+  {
+		moveForward(direction * DEFAULT_TRAVEL_SPEED);
 	}
+
 	// STEP 2: Deploy auto-scoring arm
-	servoTarget[autoServo] = 200;
-	wait1Msec(150);
-	servoTarget[autoServo] = 255;
+	servoTarget[autoServo] = AUTO_SCORING_ARM_DEPLOY_DISTANCE;
+	wait1Msec(WAIT_BEFORE_RETRACT_AUTO_SCORE_ARM_MS);
+	servoTarget[autoServo] = AUTO_SCORING_ARM_HOME;
 	wait1Msec(500);
 
-	while(nMotorEncoder[RightDrive] > -(4*360*2.0))
+	while(nMotorEncoder[RightDrive] > direction * DISTANCE_FROM_BASKET_TO_TURN)
 	{
-		moveForward(-70);
+		moveForward(direction * DEFAULT_TRAVEL_SPEED);
 	}
 
-	motor[LeftDrive] = 70;
-	motor[RightDrive] = -70;
+	motor[LeftDrive] = DEFAULT_TRAVEL_SPEED;
+	motor[RightDrive] = direction * DEFAULT_TRAVEL_SPEED;
+
+
 	while(true)
 	{
-		nxtDisplayCenteredTextLine(3, "Heading: %d", currHeading);
 		wait1Msec(10);
 		if (currHeading >= 45 && currHeading < 70) break;
 	}
@@ -156,12 +106,6 @@ waitForStart();
 	wait1Msec(100);
 
 		//STEP 7: Drive onto ramp
-	while(nMotorEncoder[RightDrive] > -(4*360*3.5))
-	{
-		moveForward(-70);
-	}
-	halt();
-	currHeading = 0.0;
-	wait1Msec(100);
+	drivedistance(DEFAULT_TRAVEL_SPEED, DISTANCE_FROM_TURN_TO_RAMP, direction);
 
 }

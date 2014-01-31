@@ -28,16 +28,16 @@ task main()
 while(true)	{
 	if(nNxtButtonPressed == 1)
 	{
-		motor[scoreWrist] = 30;
+		motor[scoreArm] = 30;
 	}
 
 	if(nNxtButtonPressed == 2)
 	{
-		motor[scoreWrist] = -30;
+		motor[scoreArm] = -30;
 	}
 	if(nNxtButtonPressed == -1)
 	{
-	motor[scoreWrist] =0;
+	motor[scoreArm] =0;
 	}
 }
 

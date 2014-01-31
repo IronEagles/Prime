@@ -127,6 +127,7 @@ void initializeRobot()
 task main()
 {
 	initializeRobot();
+	wait1Msec(2);
   waitForStart(); // Wait for the beginning of autonomous phase.
   int count = 0;
 

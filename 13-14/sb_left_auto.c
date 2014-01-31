@@ -133,8 +133,8 @@ task main()
 
 	// STEP 1: Drive straight until irsensor
 	resetEncoders();
-  while((SensorValue[irsensor] > 6 || SensorValue[irsensor] ==0) && nMotorEncoder[RightDrive] > -1*4*360*4.4){
-			nxtDisplayCenteredTextLine(3, "IR: %d", SensorValue[irsensor]);
+  while((HTIRS2readACDir(irsensor) > 6 || HTIRS2readACDir(irsensor) ==0) && nMotorEncoder[RightDrive] > -1*4*360*3.6){
+			nxtDisplayCenteredTextLine(3, "IR: %d", HTIRS2readACDir(irsensor));
 			moveForward(SPEED);
 			wait1Msec(5);
 			count++;
@@ -156,7 +156,7 @@ task main()
 	wait1Msec(500);
 	// STEP 3: long drive along wall with IR score
 	count = 0;
-	while(nMotorEncoder[RightDrive] > -1*4*360*5.0)
+	while(nMotorEncoder[RightDrive] > -1*4*360*4.5)
 	{
 		moveForward(SPEED);
 		wait1Msec(5);

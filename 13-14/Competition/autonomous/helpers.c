@@ -18,29 +18,10 @@
 #pragma config(Servo,  srvo_S1_C3_6,    servo6,               tServoNone)
 // ==================================================================================================
 
-// INCLUDES
-#include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
-#include "drivers/hitechnic-gyro.h"
-#include "drivers/hitechnic-sensormux.h"
-#include "drivers/hitechnic-irseeker-v2.h"
-#include "drivers/lego-touch.h"
+#include "configuration.h"
 
-const tMUXSensor irsensor = msensor_S4_2;
-const tMUXSensor topTouch = msensor_S4_1;
-const tMUXSensor bottomTouch = msensor_S4_3;
-//const tMUXSensor downTouch = msensor_S3_2;
 
-// MACROS
-#define BLUETAPE 35
-#define SPEED 40
-
-// GLOBALS
-float currHeading = 0.0;
-
-// ==================================================================================================
-
-// HELPERS
-void turnLeft(float rate ,int speed = 100){
+void turnLeft(float rate ,int speed = 100,tMotor LeftDrive, tMotor RightDrive){
 	if (speed > 100)
 		speed = 100;
 
@@ -78,7 +59,14 @@ void resetEncoders(){
 	nMotorEncoder[LeftDrive] = 0;
 }
 
-// ==================================================================================================
+void turnDegrees(int degrees, int currHeading=0){
+	int destination_heading = abs((currHeading + 360 + degrees) % 360);
+	// TODO: use destination heading to turn in the correct direction
+	// TODO: negative degrees are CCW turns
+	// TODO: positive degrees are CW turns
+}
+
+
 
 task heading()
 {
@@ -100,68 +88,4 @@ task heading()
     	delTime = ((float)time1[T1]) / 1000;
     	//delTime /= 1000;
 	}
-}
-
-// ==================================================================================================
-
-void initializeRobot()
-{
-  // Place code here to sinitialize servos to starting positions.
-  // Sensors are automatically configured and setup by ROBOTC. They may need a brief time to stabilize.
-	//servoTarget[Wrist] = 255;
-
-	// Initialize encoders
-  resetEncoders();
-
-	// Spawn heading tracking thread
-	StartTask(heading);
-  wait1Msec(1000);
-
-  return;
-}
-
-task main()
-{
-initializeRobot();
-wait1Msec(2);
-waitForStart();
-
-
-
-	while(nMotorEncoder[RightDrive] > -(4*360*1.3))
-	{
-		moveForward(-70);
-	}
-	// STEP 2: Deploy auto-scoring arm
-	servoTarget[autoServo] = 200;
-	wait1Msec(150);
-	servoTarget[autoServo] = 255;
-	wait1Msec(500);
-
-	while(nMotorEncoder[RightDrive] > -(4*360*2.0))
-	{
-		moveForward(-70);
-	}
-
-	motor[LeftDrive] = 70;
-	motor[RightDrive] = -70;
-	while(true)
-	{
-		nxtDisplayCenteredTextLine(3, "Heading: %d", currHeading);
-		wait1Msec(10);
-		if (currHeading >= 45 && currHeading < 70) break;
-	}
-	halt();
-	resetEncoders();
-	wait1Msec(100);
-
-		//STEP 7: Drive onto ramp
-	while(nMotorEncoder[RightDrive] > -(4*360*3.5))
-	{
-		moveForward(-70);
-	}
-	halt();
-	currHeading = 0.0;
-	wait1Msec(100);
-
 }
