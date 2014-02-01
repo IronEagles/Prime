@@ -19,7 +19,8 @@
 // ==================================================================================================
 
 #include "configuration.h"
-#include "helpers.h"
+#include "helpers_test.h"
+
 
 task heading()
 {
@@ -47,8 +48,12 @@ task heading()
 task main()
 {
 	int direction = -1;
+<<<<<<< HEAD
 	initializeRobot();
 {
+=======
+
+>>>>>>> test_program
 	// Initialize encoders
   resetEncoders();
 
@@ -56,6 +61,7 @@ task main()
 	StartTask(heading);
   wait1Msec(1000);
 
+<<<<<<< HEAD
   return;
 }
 
@@ -67,5 +73,55 @@ drivedistance(DEFAULT_TRAVEL_SPEED, TICKS_PER_REVOLUTION * 2, direction);
 turnDegrees(45, 0);
 //Turn Left
 turnDegrees(315, 0);
+=======
+  drivedistance(DEFAULT_TRAVEL_SPEED, TICKS_PER_REVOLUTION * 2, 1);
+	//Move Backward
+	drivedistance(DEFAULT_TRAVEL_SPEED, TICKS_PER_REVOLUTION * 2, direction);
+	//Turn Right and back to center
+	turnDegrees(180, 70);
+	//Turn Left
+	turnDegrees(-180, 70);
+
+
+	//Raise and lower arm
+
+	while (true){
+			if (TSreadState(topTouch) == false)
+			{
+				motor[scoreArm] = -100;
+			}
+			else if (TSreadState(topTouch) == true)
+			{
+				motor[scoreArm] = 0;
+				break;
+			}
+	}
+
+	//Lower
+	while (true){
+			if (TSreadState(bottomTouch) == false)
+			{
+				motor[scoreArm] = 100;
+			}
+			else if (TSreadState(bottomTouch) == true)
+			{
+				motor[scoreArm] = 0;
+				break;
+			}
+	}
+
+		// STEP 2: Deploy auto-scoring arm
+	servoTarget[autoServo] = AUTO_SCORING_ARM_DEPLOY_DISTANCE;
+	wait1Msec(WAIT_BEFORE_RETRACT_AUTO_SCORE_ARM_MS);
+	servoTarget[autoServo] = AUTO_SCORING_ARM_HOME;
+	wait1Msec(500);
+
+	runMotorForTime(carWash, 50, 1000);
+	runMotorForTime(carWash, -50, 1000);
+
+	runMotorForTime(flagSpinner, 50, 1000);
+	runMotorForTime(flagSpinner, -50, 1000);
+
+>>>>>>> test_program
 
 }
