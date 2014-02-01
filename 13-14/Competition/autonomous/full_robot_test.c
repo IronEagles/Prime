@@ -48,12 +48,7 @@ task heading()
 task main()
 {
 	int direction = -1;
-<<<<<<< HEAD
-	initializeRobot();
-{
-=======
 
->>>>>>> test_program
 	// Initialize encoders
   resetEncoders();
 
@@ -61,19 +56,7 @@ task main()
 	StartTask(heading);
   wait1Msec(1000);
 
-<<<<<<< HEAD
-  return;
-}
 
-//Move forward
-drivedistance(DEFAULT_TRAVEL_SPEED, TICKS_PER_REVOLUTION * 2, 1);
-//Move Backward
-drivedistance(DEFAULT_TRAVEL_SPEED, TICKS_PER_REVOLUTION * 2, direction);
-//Turn Right and back to center
-turnDegrees(45, 0);
-//Turn Left
-turnDegrees(315, 0);
-=======
   drivedistance(DEFAULT_TRAVEL_SPEED, TICKS_PER_REVOLUTION * 2, 1);
 	//Move Backward
 	drivedistance(DEFAULT_TRAVEL_SPEED, TICKS_PER_REVOLUTION * 2, direction);
@@ -122,6 +105,5 @@ turnDegrees(315, 0);
 	runMotorForTime(flagSpinner, 50, 1000);
 	runMotorForTime(flagSpinner, -50, 1000);
 
->>>>>>> test_program
 
 }
