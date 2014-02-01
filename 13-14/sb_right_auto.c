@@ -1,7 +1,19 @@
 #pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTServo,  HTMotor)
 #pragma config(Hubs,  S2, HTMotor,  none,     none,     none)
 #pragma config(Sensor, S3,     GYRO,           sensorI2CHiTechnicGyro)
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+#pragma config(Sensor, S4,     irsensor,       sensorHiTechnicIRSeeker1200)
+=======
 #pragma config(Sensor, S4,     HTSMUX,          sensorI2CCustom)
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
+=======
+#pragma config(Sensor, S4,     HTSMUX,          sensorI2CCustom)
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
+=======
+#pragma config(Sensor, S4,     HTSMUX,          sensorI2CCustom)
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
 #pragma config(Motor,  mtr_S1_C1_1,     LeftDrive,     tmotorTetrix, PIDControl, encoder)
 #pragma config(Motor,  mtr_S1_C1_2,     RightDrive,    tmotorTetrix, PIDControl, reversed, encoder)
 #pragma config(Motor,  mtr_S1_C2_1,     scoreWrist,    tmotorTetrix, PIDControl, encoder)
@@ -21,6 +33,14 @@
 // INCLUDES
 #include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
 #include "drivers/hitechnic-gyro.h"
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
+=======
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
 #include "drivers/hitechnic-sensormux.h"
 #include "drivers/hitechnic-irseeker-v2.h"
 #include "drivers/lego-touch.h"
@@ -29,6 +49,13 @@ const tMUXSensor irsensor = msensor_S4_2;
 const tMUXSensor topTouch = msensor_S4_1;
 const tMUXSensor bottomTouch = msensor_S4_3;
 //const tMUXSensor downTouch = msensor_S3_2;
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
+=======
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
+=======
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
 
 // MACROS
 #define BLUETAPE 35
@@ -145,6 +172,21 @@ task main()
 			}
 	}
 	moveForward(SPEED);
+<<<<<<< HEAD
+<<<<<<< HEAD
+<<<<<<< HEAD
+	//halt(); Disabled. We're going to try and deposit the block without stopping
+	wait1Msec (500);
+	// STEP 2: Deploy auto-scoring arm
+	servoTarget[autoServo] = 200;
+	wait1Msec(250);
+	servoTarget[autoServo] = 255;
+	wait1Msec(300);
+=======
+=======
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
+=======
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
 //halt(); Disabled motors
 	wait1Msec (500);
 	motor[LeftDrive] = 0;
@@ -154,6 +196,13 @@ task main()
 	wait1Msec(1000);
 	servoTarget[autoServo] = 255;
 	wait1Msec(500);
+<<<<<<< HEAD
+<<<<<<< HEAD
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
+=======
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
+=======
+>>>>>>> 82fa13b0890a49e9cfff7e63c3ab256379946b3f
 	// STEP 3: long drive along wall with IR score
 	count = 0;
 	while(nMotorEncoder[RightDrive] < 4*360*4.5)
