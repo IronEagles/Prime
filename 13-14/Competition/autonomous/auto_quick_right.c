@@ -20,12 +20,13 @@
 
 // Filename: auto_quick_right.c
 // Description: Quickly score autonomous block in closest end basket and immediately turn left onto the ramp.
-// Last Modified: 1/29/14
+// Last Modified: 2/1/14
 
 
 
 #include "configuration.h"
-#include "helpers.h"
+//#include "helpers.h"
+#include "helpers_test.h"
 
 
 // GLOBALS
@@ -53,7 +54,6 @@ task heading()
 	}
 
 }
-//*\\
 
 int direction = -1;
 
@@ -96,11 +96,12 @@ task main()
 	motor[RightDrive] = direction * DEFAULT_TRAVEL_SPEED;
 
 
-	while(true)
-	{
+
+
 		wait1Msec(10);
-		if (currHeading >= 45 && currHeading < 70) break;
-	}
+		//if (currHeading >= 45 && currHeading < 70) break;
+		turnDegrees(TURN_TO_RAMP_D, DEFAULT_TRAVEL_SPEED);
+
 	halt();
 	resetEncoders();
 	wait1Msec(100);

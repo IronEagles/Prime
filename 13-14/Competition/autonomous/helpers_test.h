@@ -19,10 +19,111 @@
 // ==================================================================================================
 
 #include "configuration.h"
-#include "helpers_test.h"
+#define LEFT_DRIVE LeftDrive
+#define RIGHT_DRIVE RightDrive
+
+void turnLeft(float rate ,int speed = 100){
+	if (speed > 100)
+		speed = 100;
+
+	if (rate > 1)
+		rate = 1;
+
+	motor[LEFT_DRIVE] = speed - speed*rate;
+	motor[RIGHT_DRIVE] = speed;
+}
+
+void turnRight(float rate,int speed = 100){
+	if (speed > 100)
+		speed = 100;
+
+	if (rate > 1)
+		rate = 1;
+
+	motor[LEFT_DRIVE] = speed;
+	motor[RIGHT_DRIVE] = speed - speed*rate;
+}
+
+void moveForward(int speed = 100)
+{
+	motor[LEFT_DRIVE] = speed;
+	motor[RIGHT_DRIVE] = speed;
+}
+
+void halt(){
+	motor[RIGHT_DRIVE] = 0;
+	motor[LEFT_DRIVE] = 0;
+}
+
+void resetEncoders(){
+	nMotorEncoder[RIGHT_DRIVE] = 0;
+	nMotorEncoder[LEFT_DRIVE] = 0;
+}
+
+void turnDegrees(int degrees, int speed){
+	//int destination_heading = abs((currHeading + 360 + degrees) % 360);
+  ClearTimer(T1);
+
+  int direction;
+	int low_degrees;
+  int high_degrees;
+
+	if (degrees<0){
+		direction = 1;
+	  high_degrees = 360-degrees;
+		low_degrees = degrees - 20;
+	}else{
+		direction = -1;
+		low_degrees = degrees;
+		high_degrees = degrees + 20;
+	}
+
+	motor[LEFT_DRIVE] = speed*direction*-1;
+	motor[RIGHT_DRIVE] = speed*direction;
+
+	while(true)
+	{
+		wait1Msec(10);
+		if (currHeading >= low_degrees && currHeading < high_degrees) break;
+
+		if (time1[T1] > abs(speed*degrees/5)) break; //Basic timer check.  Threshold changes based on distance turning and speed.  180 degrees * 70 speed / 5 = 2520ms.
+	}
+	halt();
+	currHeading = 0.0;
+	resetEncoders();
 
 
-task heading()
+	// TODO: use destination heading to turn in the correct direction
+	// TODO: negative degrees are CCW turns
+	// TODO: positive degrees are CW turns
+}
+
+void drivedistance(int speed, int distance, int direction)
+{
+	resetEncoders();
+	ClearTimer(T1);
+
+	moveForward(speed);
+	while(abs(nMotorEncoder[RIGHT_DRIVE]) < abs(direction * distance))
+	{
+		if (time1[T1] > abs(distance*50/speed)) break;
+	}
+	halt();
+	currHeading = 0.0;
+	wait1Msec(100);
+}
+
+void runMotorForTime(tMotor runmotor, int speed, int time=1000){
+	ClearTimer(T1);
+	motor[runmotor] = speed;
+	while (true){
+		if (time1[T1]>time) break;
+	}
+	motor[runmotor] = 0;
+
+}
+
+/* task heading()
 {
 	float delTime = 0.0;
 	float prevHeading = 0.0;
@@ -44,66 +145,4 @@ task heading()
 	}
 
 }
-
-task main()
-{
-	int direction = -1;
-
-	// Initialize encoders
-  resetEncoders();
-
-	// Spawn heading tracking thread
-	StartTask(heading);
-  wait1Msec(1000);
-
-
-  drivedistance(DEFAULT_TRAVEL_SPEED, TICKS_PER_REVOLUTION * 1, 1);
-	//Move Backward
-	drivedistance(DEFAULT_TRAVEL_SPEED, TICKS_PER_REVOLUTION * 1, direction);
-	//Turn Right and back to center
-	turnDegrees(180, 70);
-	//Turn Left
-	turnDegrees(-180, 70);
-
-
-	//Raise and lower arm
-
-	while (true){
-			if (TSreadState(topTouch) == false)
-			{
-				motor[scoreArm] = -100;
-			}
-			else if (TSreadState(topTouch) == true)
-			{
-				motor[scoreArm] = 0;
-				break;
-			}
-	}
-
-	//Lower
-	while (true){
-			if (TSreadState(bottomTouch) == false)
-			{
-				motor[scoreArm] = 100;
-			}
-			else if (TSreadState(bottomTouch) == true)
-			{
-				motor[scoreArm] = 0;
-				break;
-			}
-	}
-
-		// STEP 2: Deploy auto-scoring arm
-	servoTarget[autoServo] = AUTO_SCORING_ARM_DEPLOY_DISTANCE;
-	wait1Msec(WAIT_BEFORE_RETRACT_AUTO_SCORE_ARM_MS);
-	servoTarget[autoServo] = AUTO_SCORING_ARM_HOME;
-	wait1Msec(500);
-
-	runMotorForTime(carWash, 50, 1000);
-	runMotorForTime(carWash, -50, 1000);
-
-	runMotorForTime(flagSpinner, 50, 1000);
-	runMotorForTime(flagSpinner, -50, 1000);
-
-
-}
+*/
