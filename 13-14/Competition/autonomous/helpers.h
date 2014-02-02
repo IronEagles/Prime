@@ -60,10 +60,7 @@ void resetEncoders(){
 	nMotorEncoder[LeftDrive] = 0;
 }
 
-<<<<<<< HEAD
-void turnDegrees(int degrees, int currHeading=0){
-	int destination_heading = abs((currHeading + 360 + degrees) % 360);
-=======
+
 void turnDegrees(int degrees, int speed){
 	//int destination_heading = abs((currHeading + 360 + degrees) % 360);
   ClearTimer(T1);
@@ -96,8 +93,6 @@ void turnDegrees(int degrees, int speed){
 	currHeading = 0.0;
 	resetEncoders();
 
-
->>>>>>> test_program
 	// TODO: use destination heading to turn in the correct direction
 	// TODO: negative degrees are CCW turns
 	// TODO: positive degrees are CW turns
@@ -105,11 +100,7 @@ void turnDegrees(int degrees, int speed){
 
 void drivedistance(int speed, int distance, int direction)
 {
-<<<<<<< HEAD
-	while(nMotorEncoder[RightDrive] > direction * distance)
-	{
-		moveForward(speed);
-=======
+
 	resetEncoders();
 	ClearTimer(T1);
 
@@ -117,7 +108,7 @@ void drivedistance(int speed, int distance, int direction)
 	while(nMotorEncoder[RIGHT_DRIVE] > direction * distance)
 	{
 		if (time1[T1] > abs(distance*50/speed)) break;
->>>>>>> test_program
+
 	}
 	halt();
 	currHeading = 0.0;

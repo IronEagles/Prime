@@ -123,6 +123,11 @@ void runMotorForTime(tMotor runmotor, int speed, int time=1000){
 
 }
 
+void tareHeading(){
+	currHeading = 0;
+	wait1Msec(100);
+}
+
 /* task heading()
 {
 	float delTime = 0.0;
@@ -146,3 +151,6 @@ void runMotorForTime(tMotor runmotor, int speed, int time=1000){
 
 }
 */
+
+
+// IR Wait Helpers

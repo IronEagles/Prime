@@ -18,36 +18,14 @@
 #pragma config(Servo,  srvo_S1_C3_6,    servo6,               tServoNone)
 // ==================================================================================================
 
-// INCLUDES
-#include "JoystickDriver.c"  //Include file to "handle" the Bluetooth messages.
-#include "drivers/hitechnic-gyro.h"
-#include "drivers/hitechnic-sensormux.h"
-#include "drivers/hitechnic-irseeker-v2.h"
-#include "drivers/lego-touch.h"
+#include "configuration.h"
+#include "helpers.h"
 
-const tMUXSensor irsensor = msensor_S4_2;
-const tMUXSensor topTouch = msensor_S4_1;
-const tMUXSensor bottomTouch = msensor_S4_3;
-float currHeading = 0.0;
+task main()
+{
+	while(true)
+	{
+		nxtDisplayCenteredTextLine(3, "IR: %d", HTIRS2readACDir(irsensor));
+	}
 
-#define BLUETAPE 35
-#define SPEED 40
-
-
-
-const int TICKS_PER_REVOLUTION = 4*360;
-
-// auto_quick_right.c variables
-const float DISTANCE_TO_BASKET_FROM_INIT = TICKS_PER_REVOLUTION * 1.3;
-const float DISTANCE_FROM_BASKET_TO_TURN = TICKS_PER_REVOLUTION * 2.0;
-const int DEFAULT_TRAVEL_SPEED = 70;
-const int AUTO_SCORING_ARM_DEPLOY_DISTANCE = 200;
-const int AUTO_SCORING_ARM_HOME = 255;
-const int WAIT_BEFORE_RETRACT_AUTO_SCORE_ARM_MS = 150;
-const int TURN_TO_RAMP_D = 90;
-const float DISTANCE_FROM_TURN_TO_RAMP = TICKS_PER_REVOLUTION * 3.5;
-// WAIT IR CONSTANTS
-const float WAUTO_ITNITIAL_FOWARD = TICKS_PER_REVOLUTION * 2.0;
-const int WAUTO_BEACON_3and4_CHECK = 6;
-const int WAUTO_34_score_dis = TICKS_PER_REVOLUTION * 1.5;
-const int WAUTO_12_score_dis = TICKS_PER_REVOLUTION * 3;
+}

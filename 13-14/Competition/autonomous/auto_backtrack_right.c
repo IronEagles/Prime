@@ -148,7 +148,7 @@ task main()
 		wait1Msec(5);
 			count++;
 			if( count > 500)
-			{
+
 				halt();
 				wait1Msec(30000);
 			}
