@@ -63,15 +63,15 @@ void resetEncoders(){
 void turnDegrees(int degrees, int speed){
 	//int destination_heading = abs((currHeading + 360 + degrees) % 360);
   ClearTimer(T1);
-
+	currHeading = 0.0;
   int direction;
 	int low_degrees;
   int high_degrees;
 
 	if (degrees<0){
 		direction = 1;
-	  high_degrees = 360-degrees;
-		low_degrees = degrees - 20;
+	  high_degrees = 360+degrees;
+		low_degrees = high_degrees - 20;
 	}else{
 		direction = -1;
 		low_degrees = degrees;
@@ -86,7 +86,7 @@ void turnDegrees(int degrees, int speed){
 		wait1Msec(10);
 		if (currHeading >= low_degrees && currHeading < high_degrees) break;
 
-		if (time1[T1] > abs(speed*degrees/5)) break; //Basic timer check.  Threshold changes based on distance turning and speed.  180 degrees * 70 speed / 5 = 2520ms.
+		//if (time1[T1] > abs(speed*degrees/5)) break; //Basic timer check.  Threshold changes based on distance turning and speed.  180 degrees * 70 speed / 5 = 2520ms.
 	}
 	halt();
 	currHeading = 0.0;
@@ -98,15 +98,21 @@ void turnDegrees(int degrees, int speed){
 	// TODO: positive degrees are CW turns
 }
 
-void drivedistance(int speed, int distance, int direction)
+void drivedistance(int speed, float distance, int direction)
 {
 	resetEncoders();
 	ClearTimer(T1);
+	distance = distance*1440;
 
-	moveForward(speed);
+	moveForward(speed*direction);
 	while(abs(nMotorEncoder[RIGHT_DRIVE]) < abs(direction * distance))
 	{
-		if (time1[T1] > abs(distance*50/speed)) break;
+		if (time1[T1] > abs(distance*500/speed))
+		{
+			PlayTone(500,50);
+			wait1Msec(50);
+		//	break;
+		}
 	}
 	halt();
 	currHeading = 0.0;
@@ -126,6 +132,27 @@ void runMotorForTime(tMotor runmotor, int speed, int time=1000){
 void tareHeading(){
 	currHeading = 0;
 	wait1Msec(100);
+}
+
+//MUX test code
+bool MUXtest()
+{
+ byte status = 0;
+// SetSensorType(S3, sensorLowSpeed);
+ wait1Msec (100);
+
+ status = HTSMUXreadStatus(HTSMUX);
+
+ if(status & HTSMUX_STAT_BATT == HTSMUX_STAT_BATT)
+  {
+	  return false;
+  }
+	else
+	{
+		return true;
+	}
+
+
 }
 
 /* task heading()

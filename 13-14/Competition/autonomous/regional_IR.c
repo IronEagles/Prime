@@ -187,7 +187,7 @@ task main()
 
 			int currEncoder = nMotorEncoder[RightDrive];
 
-			while(nMotorEncoder[RightDrive] < currEncoder+(0.35*TICKS_PER_REVOLUTION))
+			while(nMotorEncoder[RightDrive] < currEncoder+(0.2*TICKS_PER_REVOLUTION))
 				{
 					moveForward((-1*direction)*DEFAULT_AUTO_SPEED);
 				}

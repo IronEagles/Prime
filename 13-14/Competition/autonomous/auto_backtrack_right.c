@@ -147,23 +147,25 @@ task main()
 		moveForward(SPEED);
 		wait1Msec(5);
 			count++;
-			if( count > 500)
+			if( count > 500){
 
 				halt();
 				wait1Msec(30000);
 			}
 	}
 	// STEP 1: Drive straight until irsensor
-  while(HTIRS2readACDir(irsensor) < 4 && nMotorEncoder[RightDrive] < 4*360*3.7){
+  while(HTIRS2readACDir(irsensor) < 4 && nMotorEncoder[RightDrive] < 4*360*3.7)
+  	{
 			nxtDisplayCenteredTextLine(3, "IR: %d", HTIRS2readACDir(irsensor));
 			moveForward(SPEED);
 			wait1Msec(5);
-			count++;
+			count ++;
 			if( count > 1000)
 			{
 				halt();
 				wait1Msec(30000);
 			}
+
 	}
 	moveForward(SPEED);
 	//halt(); Disabled. We're going to try and deposit the block without stopping

@@ -138,8 +138,20 @@ while(true)
     motor[scoreWrist] = ( joystick.joy2_y2) * 100 / speed_divisor_c2;
   }
 
-
 // scoreArm code!!!
+  if (!MUXtest())
+  {
+  	if (abs(joystick.joy2_y1) < 10 )
+ 		{
+  		motor[scoreArm] = 0;
+  	}
+    else
+    {
+     	motor[scoreArm] = (( -joystick.joy2_y1) * 100) / speed_divisor_arm;
+    }
+  }
+  else
+  {
   if (abs(joystick.joy2_y1) <= 10 && !armRaising && !armLowering && joy2Btn(6) != 1 && joy2Btn(8) != 1)
  		{
   		motor[scoreArm] = 0;
@@ -197,7 +209,7 @@ while(true)
 				armLowering = false;
 			}
 		}
-
+ }//End if for muxtest
 
 //flag spinner code
   if (joy1Btn(4)==1)

@@ -154,7 +154,8 @@ task main()
 			}
 	}
 	// STEP 1: Drive straight until irsensor
-  while(HTIRS2readACDir(irsensor) < 4 && nMotorEncoder[RightDrive] > -4*360*4.4){
+  while(HTIRS2readACDir(irsensor) < 4 && nMotorEncoder[RightDrive] > -4*360*4.4)
+  	{
 			nxtDisplayCenteredTextLine(3, "IR: %d", HTIRS2readACDir(irsensor));
 			moveForward(-1*SPEED);
 			wait1Msec(5);

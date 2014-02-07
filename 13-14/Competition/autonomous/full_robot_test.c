@@ -57,9 +57,9 @@ task main()
   wait1Msec(1000);
 
 
-  drivedistance(DEFAULT_TRAVEL_SPEED, TICKS_PER_REVOLUTION * 1, 1);
+  drivedistance(DEFAULT_TRAVEL_SPEED, 1, 1);
 	//Move Backward
-	drivedistance(DEFAULT_TRAVEL_SPEED, TICKS_PER_REVOLUTION * 1, direction);
+	drivedistance(DEFAULT_TRAVEL_SPEED, 1, direction);
 	//Turn Right and back to center
 	turnDegrees(180, 70);
 	//Turn Left

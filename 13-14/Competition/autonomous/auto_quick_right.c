@@ -76,24 +76,26 @@ task main()
 	waitForStart();
 
 	// STEP 1: Move forward to the end basket
-	while(nMotorEncoder[RightDrive] > direction * DISTANCE_TO_BASKET_FROM_INIT)
-  {
-		moveForward(direction * DEFAULT_TRAVEL_SPEED);
-	}
-
+	//while(nMotorEncoder[RightDrive] > direction * DISTANCE_TO_BASKET_FROM_INIT*TICKS_PER_REVOLUTION)
+ // {
+	//	moveForward(direction * DEFAULT_TRAVEL_SPEED);
+	//}
+  drivedistance(DEFAULT_TRAVEL_SPEED, DISTANCE_TO_BASKET_FROM_INIT_R, direction);
+	halt();
 	// STEP 2: Deploy auto-scoring arm
 	servoTarget[autoServo] = AUTO_SCORING_ARM_DEPLOY_DISTANCE;
 	wait1Msec(WAIT_BEFORE_RETRACT_AUTO_SCORE_ARM_MS);
 	servoTarget[autoServo] = AUTO_SCORING_ARM_HOME;
 	wait1Msec(500);
 
-	while(nMotorEncoder[RightDrive] > direction * DISTANCE_FROM_BASKET_TO_TURN)
-	{
-		moveForward(direction * DEFAULT_TRAVEL_SPEED);
-	}
+	//while(nMotorEncoder[RightDrive] > direction * DISTANCE_FROM_BASKET_TO_TURN * TICKS_PER_REVOLUTION)
+	//{
+	//	moveForward(direction * DEFAULT_TRAVEL_SPEED);
+	//}
+	drivedistance(DEFAULT_TRAVEL_SPEED, DISTANCE_FROM_BASKET_TO_TURN_R, direction);
 
-	motor[LeftDrive] = DEFAULT_TRAVEL_SPEED;
-	motor[RightDrive] = direction * DEFAULT_TRAVEL_SPEED;
+	//motor[LeftDrive] = DEFAULT_TRAVEL_SPEED;
+	//motor[RightDrive] = direction * DEFAULT_TRAVEL_SPEED;
 
 
 

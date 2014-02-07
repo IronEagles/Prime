@@ -18,16 +18,9 @@
 #pragma config(Servo,  srvo_S1_C3_6,    servo6,               tServoNone)
 // ==================================================================================================
 
-// Filename: auto_quick_right.c
-// Description: Quickly score autonomous block in closest end basket and immediately turn left onto the ramp.
-// Last Modified: 2/1/14
-
-
-
-#include "configuration.h"
-//#include "helpers.h"
+//Include
 #include "helpers_test.h"
-
+#include "configuration.h"
 
 // GLOBALS
 
@@ -55,6 +48,7 @@ task heading()
 
 }
 
+int count =  0;
 int direction = -1;
 
 void initializeRobot()
@@ -75,40 +69,14 @@ task main()
 	wait1Msec(2);
 	waitForStart();
 
-	// STEP 1: Move forward to the end basket
-	//while(nMotorEncoder[RightDrive] > direction * DISTANCE_TO_BASKET_FROM_INIT*TICKS_PER_REVOLUTION)
- // {
-	//	moveForward(direction * DEFAULT_TRAVEL_SPEED);
-	//}
-  drivedistance(DEFAULT_TRAVEL_SPEED, DISTANCE_TO_BASKET_FROM_INIT_L, (-1*direction));
+	turnDegrees(45,50);
 	halt();
-	// STEP 2: Deploy auto-scoring arm
-	servoTarget[autoServo] = AUTO_SCORING_ARM_DEPLOY_DISTANCE;
-	wait1Msec(WAIT_BEFORE_RETRACT_AUTO_SCORE_ARM_MS);
-	servoTarget[autoServo] = AUTO_SCORING_ARM_HOME;
 	wait1Msec(500);
 
-	//while(nMotorEncoder[RightDrive] > direction * DISTANCE_FROM_BASKET_TO_TURN * TICKS_PER_REVOLUTION)
-	//{
-	//	moveForward(direction * DEFAULT_TRAVEL_SPEED);
-	//}
-	drivedistance(DEFAULT_TRAVEL_SPEED, DISTANCE_FROM_BASKET_TO_TURN_L, (-1*direction));
-
-	//motor[LeftDrive] = DEFAULT_TRAVEL_SPEED;
-	//motor[RightDrive] = direction * DEFAULT_TRAVEL_SPEED;
-
-
-
-
-		wait1Msec(10);
-		//if (currHeading >= 45 && currHeading < 70) break;
-		turnDegrees(-1*43, DEFAULT_TRAVEL_SPEED);
-
+	turnDegrees(-1*45,50);
 	halt();
-	resetEncoders();
-	wait1Msec(100);
+	wait1Msec(500);
 
-		//STEP 7: Drive onto ramp
-	drivedistance(DEFAULT_TRAVEL_SPEED, DISTANCE_FROM_TURN_TO_RAMP, (-1*direction));
+
 
 }
