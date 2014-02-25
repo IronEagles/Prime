@@ -77,6 +77,7 @@ task main()
 	int speed_divisor_c2 = 0;
 	int speed_divisor_arm = 0;
 	int threshold = 10;
+	string mux="";
 
 while(true)
 {
@@ -128,7 +129,7 @@ while(true)
 //joystick code
 
 			speed_divisor_c2 = 200;
-			speed_divisor_arm = 150;
+			speed_divisor_arm = 100;
 
 	if (abs(joystick.joy2_y2) < 10) {
       motor[scoreWrist] = 0;
@@ -140,7 +141,7 @@ while(true)
 
 
 // scoreArm code!!!
-  if (abs(joystick.joy2_y1) <= 10 && !armRaising && !armLowering && joy2Btn(6) != 1 && joy2Btn(8) != 1)
+  if (abs(joystick.joy2_y1) <= 15 && !armRaising && !armLowering && joy2Btn(6) != 1 && joy2Btn(8) != 1)
  		{
   		motor[scoreArm] = 0;
   	}
@@ -197,6 +198,14 @@ while(true)
 				armLowering = false;
 			}
 		}
+
+		/*if ( MUXtest() ){
+			mux = "ok";
+		}else{
+			mux = "bad";
+		}*/
+		//nxtDisplayTextLine(7, "Arm Power: %d, %s", motor[scoreArm], mux);
+
 
 
 //flag spinner code

@@ -18,7 +18,7 @@
 #pragma config(Servo,  srvo_S1_C3_6,    servo6,               tServoNone)
 // ==================================================================================================
 
-#include "configuration.h"
+#include "configuration_test.h"
 #define LEFT_DRIVE LeftDrive
 #define RIGHT_DRIVE RightDrive
 
@@ -62,11 +62,12 @@ void resetEncoders(){
 
 void turnDegrees(int degrees, int speed){
 	//int destination_heading = abs((currHeading + 360 + degrees) % 360);
-  ClearTimer(T1);
+  int count = 0;
 	currHeading = 0.0;
   int direction;
 	int low_degrees;
   int high_degrees;
+  count ++;
 
 	if (degrees<0){
 		direction = 1;
@@ -84,9 +85,15 @@ void turnDegrees(int degrees, int speed){
 	while(true)
 	{
 		wait1Msec(10);
+		count ++;
 		if (currHeading >= low_degrees && currHeading < high_degrees) break;
 
-		//if (time1[T1] > abs(speed*degrees/5)) break; //Basic timer check.  Threshold changes based on distance turning and speed.  180 degrees * 70 speed / 5 = 2520ms.
+		if (count > 800)
+		{
+			halt();
+			wait1Msec(30000);
+
+		} //Basic timer check.  Threshold changes based on distance turning and speed.  180 degrees * 70 speed / 5 = 2520ms.
 	}
 	halt();
 	currHeading = 0.0;
@@ -102,17 +109,34 @@ void drivedistance(int speed, float distance, int direction)
 {
 	resetEncoders();
 	ClearTimer(T1);
-	distance = distance*1440;
+	distance = distance * TICKS_PER_REVOLUTION;
+	int count = 0;
 
-	moveForward(speed*direction);
-	while(abs(nMotorEncoder[RIGHT_DRIVE]) < abs(direction * distance))
+	int rightEncoder = nMotorEncoder[RIGHT_DRIVE];
+	int leftEncoder = nMotorEncoder[LEFT_DRIVE];
+	moveForward(speed * direction);
+	while(abs(nMotorEncoder[RIGHT_DRIVE]) < abs(direction * distance) && abs(nMotorEncoder[LEFT_DRIVE]) < abs(direction * distance))
 	{
-		if (time1[T1] > abs(distance*500/speed))
+		/*if (time1[T1] > abs(distance*500/speed))
 		{
 			PlayTone(500,50);
 			wait1Msec(50);
 		//	break;
+		}*/
+		if (count >= 500)
+		{
+			if (abs(nMotorEncoder[RIGHT_DRIVE]) < abs(rightEncoder) + ENCODER_CHECK || abs(nMotorEncoder[LEFT_DRIVE]) < abs(leftEncoder) + ENCODER_CHECK)
+			{
+				halt();
+				PlayTone(500,500);
+				wait1Msec(30000);
+			}
+			rightEncoder = nMotorEncoder[RIGHT_DRIVE];
+			leftEncoder = nMotorEncoder[LEFT_DRIVE];
+			count = 0;
 		}
+		count++;
+		wait1Msec(5);
 	}
 	halt();
 	currHeading = 0.0;
