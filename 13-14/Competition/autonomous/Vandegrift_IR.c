@@ -1,4 +1,4 @@
-#pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTServo,  HTMotor)
+	#pragma config(Hubs,  S1, HTMotor,  HTMotor,  HTServo,  HTMotor)
 #pragma config(Hubs,  S2, HTMotor,  none,     none,     none)
 #pragma config(Sensor, S3,     GYRO,           sensorI2CHiTechnicGyro)
 #pragma config(Sensor, S4,     HTSMUX,          sensorI2CCustom)
