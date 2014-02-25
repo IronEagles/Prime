@@ -45,7 +45,7 @@ const float DISTANCE_FROM_BASKET_TO_TURN_L = 1.3;
 const int DEFAULT_TRAVEL_SPEED = 70;
 const int AUTO_SCORING_ARM_DEPLOY_DISTANCE = 200;
 const int AUTO_SCORING_ARM_HOME = 255;
-const int WAIT_BEFORE_RETRACT_AUTO_SCORE_ARM_MS = 1000;
+const int WAIT_BEFORE_RETRACT_AUTO_SCORE_ARM_MS = 500;
 const int TURN_TO_RAMP_D = 48;
 const float DISTANCE_FROM_TURN_TO_RAMP = 4.4;
 // WAIT IR CONSTANTS
@@ -63,3 +63,14 @@ const float DISTANCE_FROM_TURN_TO_RAMP_W = 5.0;
 const int WAIT_MENU_TIMEOUT = 20000;
 
 const int ENCODER_CHECK = 360;
+
+//Straight IR config
+const float BASKET_1_R = 1.8;
+const float BASKET_2_R = 0.9;
+const float BASKET_3_R = 1.8;
+const float BASKET_4_R = 0.9;
+const float STRAIGHT_IR_FORWARD_AFTER_SCORE = 0.9;
+const float STRAIGHT_IR_TURN_1_DEGREES = 45;
+const float STRAIGHT_IR_FORWARD_RAMP_ALIGN = 1.5;
+const float STRAIGHT_IR_TURN_2_DEGREES = 75;
+const float STRAIGHT_IR_FORWARD_ON_RAMP = 2.0;
