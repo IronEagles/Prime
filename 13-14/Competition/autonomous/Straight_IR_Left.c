@@ -77,7 +77,7 @@ task heading()
 }
 
 int count =  0;
-int direction = 1;
+int direction = -1;
 
 void initializeRobot()
 {
@@ -110,7 +110,7 @@ task main()
 	wait1Msec(wait-1*1000);
 
 	// Initial drive foward
-	drivedistance(DEFAULT_AUTO_SPEED, BASKET_1_R, direction);
+	drivedistance(DEFAULT_AUTO_SPEED, BASKET_4_L, direction);
 	//halt();
 
 	//Check and score
@@ -126,7 +126,7 @@ task main()
 	}
 
 
-	drivedistance(DEFAULT_AUTO_SPEED, BASKET_2_R, direction);
+	drivedistance(DEFAULT_AUTO_SPEED, BASKET_3_L, direction);
 	//halt();
 
 	//Check and score
@@ -141,7 +141,7 @@ task main()
 			irscored=true;
 	}
 
-	drivedistance(DEFAULT_AUTO_SPEED, BASKET_3_R, direction);
+	drivedistance(DEFAULT_AUTO_SPEED, BASKET_2_L, direction);
 	//halt();
 
 	//Check and score
@@ -156,7 +156,7 @@ task main()
 			irscored=true;
 	}
 
-	drivedistance(DEFAULT_AUTO_SPEED, BASKET_4_R, direction);
+	drivedistance(DEFAULT_AUTO_SPEED, BASKET_1_L, direction);
 	//halt();
 
 	//Check and score
@@ -171,13 +171,13 @@ task main()
 			irscored=true;
 	}
 
-	drivedistance(DEFAULT_AUTO_SPEED, STRAIGHT_IR_FORWARD_AFTER_SCORE, direction);
+	drivedistance(DEFAULT_AUTO_SPEED, STRAIGHT_IR_FORWARD_AFTER_SCORE_L, direction);
 
-	turnDegrees(STRAIGHT_IR_TURN_1_DEGREES, DEFAULT_AUTO_SPEED);
+	turnDegrees(STRAIGHT_IR_TURN_1_DEGREES_L, DEFAULT_AUTO_SPEED);
 
-	drivedistance(DEFAULT_AUTO_SPEED, STRAIGHT_IR_FORWARD_RAMP_ALIGN, direction);
+	drivedistance(DEFAULT_AUTO_SPEED, STRAIGHT_IR_FORWARD_RAMP_ALIGN_L, direction);
 
-  turnDegrees(STRAIGHT_IR_TURN_2_DEGREES, DEFAULT_AUTO_SPEED);
-	drivedistance(DEFAULT_AUTO_SPEED, STRAIGHT_IR_FORWARD_ON_RAMP, direction);
+  turnDegrees(STRAIGHT_IR_TURN_2_DEGREES_L, DEFAULT_AUTO_SPEED);
+	drivedistance(DEFAULT_AUTO_SPEED, STRAIGHT_IR_FORWARD_ON_RAMP_L, direction);
 
 }

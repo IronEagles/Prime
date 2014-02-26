@@ -18,7 +18,6 @@
 #pragma config(Servo,  srvo_S1_C3_6,    servo6,               tServoNone)
 // ==================================================================================================
 
-#include "configuration.h"
 #include "helpers_test.h"
 
 
@@ -57,13 +56,13 @@ task main()
   wait1Msec(1000);
 
 
-  drivedistance(DEFAULT_TRAVEL_SPEED, 1, 1);
+  drivedistance(DEFAULT_AUTO_SPEED, 1, 1);
 	//Move Backward
-	drivedistance(DEFAULT_TRAVEL_SPEED, 1, direction);
+	drivedistance(DEFAULT_AUTO_SPEED, 1, direction);
 	//Turn Right and back to center
-	turnDegrees(180, 70);
+	turnDegrees(180, 50);
 	//Turn Left
-	turnDegrees(-180, 70);
+	turnDegrees(-180, 50);
 
 
 	//Raise and lower arm

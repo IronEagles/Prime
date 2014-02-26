@@ -41,7 +41,7 @@ const int TICKS_PER_REVOLUTION = 4*360;
 const float DISTANCE_TO_BASKET_FROM_INIT_R = 1.5;
 const float DISTANCE_TO_BASKET_FROM_INIT_L = 0.5;
 const float DISTANCE_FROM_BASKET_TO_TURN_R = 0.8;
-const float DISTANCE_FROM_BASKET_TO_TURN_L = 1.3;
+const float DISTANCE_FROM_BASKET_TO_TURN_L = 1.65;
 const int DEFAULT_TRAVEL_SPEED = 70;
 const int AUTO_SCORING_ARM_DEPLOY_DISTANCE = 200;
 const int AUTO_SCORING_ARM_HOME = 255;
@@ -64,13 +64,24 @@ const int WAIT_MENU_TIMEOUT = 20000;
 
 const int ENCODER_CHECK = 360;
 
-//Straight IR config
-const float BASKET_1_R = 1.8;
-const float BASKET_2_R = 0.9;
-const float BASKET_3_R = 1.8;
-const float BASKET_4_R = 0.9;
-const float STRAIGHT_IR_FORWARD_AFTER_SCORE = 0.9;
-const float STRAIGHT_IR_TURN_1_DEGREES = 45;
-const float STRAIGHT_IR_FORWARD_RAMP_ALIGN = 1.5;
-const float STRAIGHT_IR_TURN_2_DEGREES = 75;
-const float STRAIGHT_IR_FORWARD_ON_RAMP = 2.0;
+//Straight IR Right config
+const float BASKET_1_R = 0.45;
+const float BASKET_2_R = 0.6;
+const float BASKET_3_R = 1.6;
+const float BASKET_4_R = 0.78;
+const float STRAIGHT_IR_FORWARD_AFTER_SCORE = 1.2;
+const float STRAIGHT_IR_TURN_1_DEGREES = -36.5;
+const float STRAIGHT_IR_FORWARD_RAMP_ALIGN = 3.0;
+const float STRAIGHT_IR_TURN_2_DEGREES = -80;
+const float STRAIGHT_IR_FORWARD_ON_RAMP = 3.7;
+
+//Straight IR Left config
+const float BASKET_1_L = 0.65;
+const float BASKET_2_L = 1.6;
+const float BASKET_3_L = 0.6;
+const float BASKET_4_L = 1.23;
+const float STRAIGHT_IR_FORWARD_AFTER_SCORE_L = 0.4;
+const float STRAIGHT_IR_TURN_1_DEGREES_L = 34.5;
+const float STRAIGHT_IR_FORWARD_RAMP_ALIGN_L = 2.8;
+const float STRAIGHT_IR_TURN_2_DEGREES_L = 80;
+const float STRAIGHT_IR_FORWARD_ON_RAMP_L = 5.1;

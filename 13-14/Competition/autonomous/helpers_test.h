@@ -146,9 +146,8 @@ void drivedistance(int speed, float distance, int direction)
 void runMotorForTime(tMotor runmotor, int speed, int time=1000){
 	ClearTimer(T1);
 	motor[runmotor] = speed;
-	while (true){
-		if (time1[T1]>time) break;
-	}
+	wait1Msec(time);
+
 	motor[runmotor] = 0;
 
 }

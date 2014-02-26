@@ -102,13 +102,13 @@ task main()
 
 		wait1Msec(10);
 		//if (currHeading >= 45 && currHeading < 70) break;
-		turnDegrees(43, DEFAULT_TRAVEL_SPEED);
+		turnDegrees(110 , DEFAULT_TRAVEL_SPEED);
 
 	halt();
 	resetEncoders();
 	wait1Msec(100);
 
 		//STEP 7: Drive onto ramp
-	drivedistance(DEFAULT_TRAVEL_SPEED, DISTANCE_FROM_TURN_TO_RAMP, (-1*direction));
+	drivedistance(DEFAULT_TRAVEL_SPEED, DISTANCE_FROM_TURN_TO_RAMP, (direction));
 
 }
