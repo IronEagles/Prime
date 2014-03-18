@@ -20,7 +20,7 @@
 
 //Include
 #include "helpers_test.h"
-#include "configuration_test.h"
+#include "configuration.h"
 
 // GLOBALS
 
@@ -110,7 +110,7 @@ task main()
 	// Initial drive foward
 	drivedistance(DEFAULT_AUTO_SPEED, WAUTO_ITNITIAL_FORWARD, direction);
 
-	turnDegrees(-40, 33);
+	turnDegrees(-43, 50);
 	halt();
 	wait1Msec(100);
 	resetEncoders();
@@ -172,14 +172,6 @@ task main()
 	else
 	{
 		resetEncoders();
-
-		int currEncoder = nMotorEncoder[RightDrive];
-
-			while(nMotorEncoder[RightDrive] < currEncoder+(0.3*TICKS_PER_REVOLUTION))
-				{
-					moveForward((-1*direction)*DEFAULT_AUTO_SPEED);
-				}
-
 		while((HTIRS2readACDir(irsensor) <= 4) && nMotorEncoder[RightDrive] < WAUTO_12_score_disF*TICKS_PER_REVOLUTION)
 			{
 				moveForward((-1*direction)* DEFAULT_AUTO_SPEED);
@@ -193,8 +185,12 @@ task main()
 			}
 			halt();
 
+			int currEncoder = nMotorEncoder[RightDrive];
 
-
+			while(nMotorEncoder[RightDrive] < currEncoder+(0.2*TICKS_PER_REVOLUTION))
+				{
+					moveForward((-1*direction)*DEFAULT_AUTO_SPEED);
+				}
 			halt();
 			wait1Msec(10);
 			servoTarget[autoServo] = 150;
@@ -224,7 +220,7 @@ task main()
 			wait1Msec(10);
 
 			tareHeading();
-			turnDegrees(75, DEFAULT_AUTO_SPEED);
+			turnDegrees(65, DEFAULT_AUTO_SPEED);
 			halt();
 			wait1Msec(10);
 			resetEncoders();
@@ -235,7 +231,7 @@ task main()
 			resetEncoders();
 			wait1Msec(100);
 
-			drivedistance(RAMP_SPEED, 5.2, direction);
+			drivedistance(RAMP_SPEED, 4.2, direction);
 			halt();
 	}
 
