@@ -80,6 +80,7 @@ bool HTIRS2readAllACStrength(tSensors link, int &acS1, int &acS2, int &acS3, int
 
 bool HTIRS2readEnhanced(tSensors  link, int &dir, int &strength);
 
+
 #ifdef __HTSMUX_SUPPORT__
 // ---------------------------- DC Signal processing -----------------------------
 int HTIRS2readDCDir(tMUXSensor muxsensor);

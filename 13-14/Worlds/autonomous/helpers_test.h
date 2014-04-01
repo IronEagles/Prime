@@ -178,6 +178,60 @@ bool MUXtest()
 
 }
 
+bool check12(tMUXSensor irsensor1, tMUXSensor irsensor2)
+{
+	int dirIR1 = 0;
+  int dirIR2 = 0;
+	int dcS1_1, dcS2_1, dcS3_1, dcS4_1, dcS5_1 = 0;
+	int dcS1_2, dcS2_2, dcS3_2, dcS4_2, dcS5_2 = 0;
+
+		dirIR1 = HTIRS2readACDir(irsensor1);
+			HTIRS2readAllACStrength(irsensor1, dcS1_1, dcS2_1, dcS3_1, dcS4_1, dcS5_1 );
+
+		dirIR2 = HTIRS2readACDir(irsensor2);
+			HTIRS2readAllACStrength(irsensor2, dcS1_2, dcS2_2, dcS3_2, dcS4_2, dcS5_2 );
+
+
+		nxtDisplayTextLine(7, "%d,%d,%d,%d,%d", dcS1_2, dcS2_2, dcS3_2, dcS4_2, dcS5_2);
+		nxtDisplayTextLine(6, "%d,%d,%d,%d,%d", dcS1_1, dcS2_1, dcS3_1, dcS4_1, dcS5_1);
+
+	if(dcS3_1 >= 150 && dcS2_2 >= 150 && dcS3_2 >= 150)
+	{
+
+
+
+			return true;
+	}
+	return false;
+}
+
+bool check34(tMUXSensor irsensor1, tMUXSensor irsensor2)
+{
+	int dirIR1 = 0;
+  int dirIR2 = 0;
+	int dcS1_1, dcS2_1, dcS3_1, dcS4_1, dcS5_1 = 0;
+	int dcS1_2, dcS2_2, dcS3_2, dcS4_2, dcS5_2 = 0;
+
+		dirIR1 = HTIRS2readACDir(irsensor1);
+			HTIRS2readAllACStrength(irsensor1, dcS1_1, dcS2_1, dcS3_1, dcS4_1, dcS5_1 );
+
+		dirIR2 = HTIRS2readACDir(irsensor2);
+			HTIRS2readAllACStrength(irsensor2, dcS1_2, dcS2_2, dcS3_2, dcS4_2, dcS5_2 );
+
+
+		nxtDisplayTextLine(7, "%d,%d,%d,%d,%d", dcS1_2, dcS2_2, dcS3_2, dcS4_2, dcS5_2);
+		nxtDisplayTextLine(6, "%d,%d,%d,%d,%d", dcS1_1, dcS2_1, dcS3_1, dcS4_1, dcS5_1);
+
+	if(dcS3_1 >= 150 && dcS5_2 >= 0 && dcS3_2 >= 150)
+	{
+
+
+
+			return true;
+	}
+	return false;
+}
+
 /* task heading()
 {
 	float delTime = 0.0;

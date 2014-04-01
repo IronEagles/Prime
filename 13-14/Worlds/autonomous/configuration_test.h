@@ -85,3 +85,7 @@ const float STRAIGHT_IR_TURN_1_DEGREES_L = 34.5;
 const float STRAIGHT_IR_FORWARD_RAMP_ALIGN_L = 2.8;
 const float STRAIGHT_IR_TURN_2_DEGREES_L = 80;
 const float STRAIGHT_IR_FORWARD_ON_RAMP_L = 5.1;
+
+
+//Double IR Sensor Auto
+int doubleIRthreshold = 9353;

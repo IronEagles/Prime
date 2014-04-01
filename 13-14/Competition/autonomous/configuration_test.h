@@ -25,9 +25,10 @@
 #include "drivers/hitechnic-irseeker-v2.h"
 #include "drivers/lego-touch.h"
 
-const tMUXSensor irsensor = msensor_S4_2;
+const tMUXSensor irsensor1 = msensor_S4_2;
 const tMUXSensor topTouch = msensor_S4_1;
 const tMUXSensor bottomTouch = msensor_S4_3;
+const tMUXSensor irsensor2 = msensor_S4_4;
 float currHeading = 0.0;
 
 #define BLUETAPE 35
